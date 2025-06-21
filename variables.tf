@@ -45,6 +45,7 @@ variable "my_ip" {
 variable "key_pair_name" {
   description = "Name of an existing EC2 key pair for SSH access"
   type        = string
+  default = "rsschool-devops-task2-key"
 }
 variable "bucket_name" {
   type    = string
