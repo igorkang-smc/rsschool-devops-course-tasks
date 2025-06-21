@@ -40,6 +40,7 @@ variable "enable_nat_instance" {
 variable "my_ip" {
   description = "Source IP/CIDR allowed to SSH into the bastion host"
   type        = string
+  default     = "0.0.0.0/0"
 }
 
 variable "key_pair_name" {
