@@ -1,2 +1,12 @@
-aws_region = "your-aws-region"
+# --- Mandatory --------------------------------------------------------------
+project       = "rsschool-devops-task2"
+region        = "ap-northeast-2"
+my_ip         = "203.0.113.0/32"
+key_pair_name = "my-keypair"
 bucket_name  = "rsschool-tf-state-12345"
+
+# --- Optional tweaks --------------------------------------------------------
+# enable_nat_instance = true
+# azs               = ["ap-northeast-2a", "ap-northeast-2c"]
+# public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+# private_subnet_cidrs = ["10.0.101.0/24", "10.0.102.0/24"]
