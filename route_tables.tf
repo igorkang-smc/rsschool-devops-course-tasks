@@ -34,8 +34,8 @@ resource "aws_route" "private_egress" {
   route_table_id         = aws_route_table.private[count.index].id
   destination_cidr_block = "0.0.0.0/0"
 
-  nat_gateway_id         = var.enable_nat_instance ? null                      : one(aws_nat_gateway.nat[*].id)
-  network_interface_id   = var.enable_nat_instance ? data.aws_network_interface.nat_eni[0].id : null
+  nat_gateway_id       = var.enable_nat_instance ? null : one(aws_nat_gateway.nat[*].id)
+  network_interface_id = var.enable_nat_instance ? data.aws_network_interface.nat_eni[0].id : null
 }
 
 resource "aws_route_table_association" "private" {

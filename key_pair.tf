@@ -6,6 +6,6 @@ resource "tls_private_key" "bastion" {
 
 # Upload the public half to AWS as an EC2 key pair
 resource "aws_key_pair" "bastion" {
-  key_name   = "${var.project}-key"   # will show up in the console
+  key_name   = "${var.project}-key" # will show up in the console
   public_key = tls_private_key.bastion.public_key_openssh
 }
