@@ -4,6 +4,18 @@ variable "region" {
   default     = "ap-northeast-2"
 }
 
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "ap-northeast-2"
+}
+
+variable "aws_default_region" {
+  description = "AWS region"
+  type        = string
+  default     = "ap-northeast-2"
+}
+
 variable "project" {
   description = "Prefix for all resource names"
   type        = string

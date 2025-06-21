@@ -1,6 +1,8 @@
 # --- Mandatory --------------------------------------------------------------
 project       = "rsschool-devops-task2"
 region        = "ap-northeast-2"
+aws_region        = "ap-northeast-2"
+aws_default_region        = "ap-northeast-2"
 my_ip         = "203.0.113.0/32"
 key_pair_name = "rsschool-devops-task2-key"
 bucket_name  = "rsschool-tf-state-12345"
