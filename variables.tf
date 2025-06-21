@@ -19,7 +19,7 @@ variable "aws_default_region" {
 variable "project" {
   description = "Prefix for all resource names"
   type        = string
-  default     = "task2"
+  default     = "rsschool-devops-task2"
 }
 
 variable "vpc_cidr" {
