@@ -63,3 +63,42 @@ When finished:
 ```bash
 terraform destroy -var-file=terraform.tfvars
 ```
+
+# Jenkins using Minikube
+
+1. Install [Helm](https://helm.sh/docs/intro/install/)
+2. Install [Minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download)
+3. Start cluster `minikube start`.
+4. Add Jenkins to Helm repo
+
+```bash
+helm repo add jenkinsci https://charts.jenkins.io
+helm repo update
+```
+
+5. Create namespace and apply PV and PVC:
+
+```bash
+kubectl create namespace jenkins
+kubectl apply -f jenkins-01.yaml
+kubectl apply -f jenkins-02.yaml
+```
+
+6. Install Jenkins:
+
+```bash
+helm install jenkins jenkinsci/jenkins -n jenkins -f jenkins-values.yaml
+```
+
+[Jenkins](https://www.jenkins.io/doc/book/installing/kubernetes/#install-jenkins-with-helm-v3)
+
+```
+kubectl port-forward svc/jenkins -n jenkins 8080:8080
+```
+
+8. Use `http://localhost:8080` to open Jenkins web-page
+9. Use credentials (set in values.yaml):
+
+   user: admin
+
+   password: strong-admin-password
