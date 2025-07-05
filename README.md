@@ -98,5 +98,7 @@ kubectl port-forward svc/jenkins -n jenkins 8080:8080
 
 8. Use `http://localhost:8080` to open Jenkins web-page
 9. Use credentials (set in values.yaml):
+
    user: admin
+
    password: strong-admin-password
