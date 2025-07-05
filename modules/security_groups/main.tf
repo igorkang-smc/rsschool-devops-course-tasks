@@ -66,6 +66,14 @@ resource "aws_security_group" "private_instances" {
     security_groups = [aws_security_group.bastion.id]
   }
 
+  # Allow k3s API (6443) from bastion
+  ingress {
+    from_port       = 6443
+    to_port         = 6443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.bastion.id]
+  }
+
   # Allow all traffic from other VPC instances (inter-subnet communication)
   ingress {
     from_port   = 0

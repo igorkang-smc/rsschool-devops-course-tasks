@@ -11,6 +11,11 @@ sysctl -p /etc/sysctl.conf
 /sbin/iptables -A FORWARD -i eth0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 /sbin/iptables -A FORWARD -i eth0 -o eth0 -j ACCEPT
 
+# Install kubectl (latest stable)
+KUBECTL_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+curl -Lo /usr/local/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+chmod +x /usr/local/bin/kubectl
+
 # Save iptables rules
 /sbin/service iptables save
 
