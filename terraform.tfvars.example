@@ -1,0 +1,2 @@
+aws_region = "your-aws-region"
+bucket_name  = "rsschool-tf-state-12345"
