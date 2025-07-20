@@ -56,6 +56,7 @@ pipeline {
         HELM_RELEASE_NAME = 'flask-chart'
         SONARQUBE_SERVER = 'sonarqube'
         SONAR_PROJECT_KEY = 'flask-cicd-demo'
+        BRANCH_NAME = 'task_6'
         SLACK_CHANNEL = '#ai'
     }
 
