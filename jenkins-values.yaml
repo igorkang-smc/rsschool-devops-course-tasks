@@ -411,9 +411,11 @@ controller:
     - workflow-aggregator:608.v67378e9d3db_1
     - git:5.7.0
     - configuration-as-code:1971.vf9280461ea_89
-    - configuration-as-code-groovy
-    - job-dsl
-    - matrix-auth
+    - configuration-as-code-groovy:latest
+    - job-dsl:latest
+    - matrix-auth:latest
+    - timestamper:latest
+    - ansicolor:latest
 
   # If set to false, Jenkins will download the minimum required version of all dependencies.
   # -- Download the minimum required version or latest version of all dependencies
