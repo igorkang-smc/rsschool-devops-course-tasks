@@ -30,6 +30,11 @@ pipeline {
                     command: ["sleep"]
                     args: ["99d"]
                     tty: true
+                  - name: sonar
+                    image: sonarsource/sonar-scanner-cli:latest
+                    command: ["sleep"]
+                    args: ["99d"]
+                    tty: true
                   volumes:
                   - name: docker-config
                     secret:
@@ -115,30 +120,9 @@ pipeline {
 
         stage('Code Quality - SonarQube') {
             steps {
-                container('python') {
-                    script {
-                        sh '''
-                            pip install sonar-scanner
-                            cat > sonar-project.properties << EOF
-sonar.projectKey=${SONAR_PROJECT_KEY}
-sonar.projectName=Flask CI/CD Demo
-sonar.projectVersion=${APP_VERSION}
-sonar.sources=.
-sonar.exclusions=tests/**,htmlcov/**,venv/**
-sonar.python.coverage.reportPaths=coverage.xml
-sonar.python.xunit.reportPath=test-results.xml
-EOF
-                        '''
-
-                        withSonarQubeEnv('SonarQube') {
-                            sh '''
-                                sonar-scanner \\
-                                    -Dsonar.projectKey=${SONAR_PROJECT_KEY} \\
-                                    -Dsonar.sources=. \\
-                                    -Dsonar.host.url=${SONAR_HOST_URL} \\
-                                    -Dsonar.login=${SONAR_AUTH_TOKEN}
-                            '''
-                        }
+                container('sonar') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh 'sonar-scanner'
                     }
                 }
             }
