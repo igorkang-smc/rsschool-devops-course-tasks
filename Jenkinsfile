@@ -49,7 +49,7 @@ pipeline {
     environment {
         APP_NAME = 'flask-cicd-demo'
         APP_VERSION = "${BUILD_NUMBER}"
-        DOCKER_HUB_REPO = 'your-dockerhub-username'
+        DOCKER_HUB_REPO = 'elfkid'
         IMAGE_TAG = "${DOCKER_HUB_REPO}/${APP_NAME}:${APP_VERSION}"
         IMAGE_LATEST = "${DOCKER_HUB_REPO}/${APP_NAME}:latest"
         K8S_NAMESPACE = 'default'
