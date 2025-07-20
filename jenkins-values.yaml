@@ -418,6 +418,7 @@ controller:
     - ansicolor:latest
     - ws-cleanup:latest
     - slack:latest
+    - htmlpublisher:latest
 
   # If set to false, Jenkins will download the minimum required version of all dependencies.
   # -- Download the minimum required version or latest version of all dependencies

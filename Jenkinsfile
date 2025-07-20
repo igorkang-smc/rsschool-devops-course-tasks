@@ -51,8 +51,7 @@ pipeline {
         HELM_RELEASE_NAME = 'flask-app'
         SONARQUBE_SERVER = 'sonarqube'
         SONAR_PROJECT_KEY = 'flask-cicd-demo'
-        SLACK_CHANNEL = '#devops'
-        EMAIL_RECIPIENTS = 'devops@company.com'
+        SLACK_CHANNEL = '#ai'
     }
 
     options {
@@ -248,16 +247,6 @@ Build URL: ${env.BUILD_URL}
                 } catch (e) {
                     echo "Slack notification failed: ${e.getMessage()}"
                 }
-
-                try {
-                    emailext(
-                        subject: "✅ Pipeline Success: ${env.JOB_NAME} - Build ${env.BUILD_NUMBER}",
-                        body: message,
-                        to: env.EMAIL_RECIPIENTS
-                    )
-                } catch (e) {
-                    echo "Email notification failed: ${e.getMessage()}"
-                }
             }
         }
 
@@ -297,15 +286,6 @@ Build URL: ${env.BUILD_URL}
                     echo "Slack notification failed: ${e.getMessage()}"
                 }
 
-                try {
-                    emailext(
-                        subject: "❌ Pipeline Failed: ${env.JOB_NAME} - Build ${env.BUILD_NUMBER}",
-                        body: message,
-                        to: env.EMAIL_RECIPIENTS
-                    )
-                } catch (e) {
-                    echo "Email notification failed: ${e.getMessage()}"
-                }
             }
         }
     }
