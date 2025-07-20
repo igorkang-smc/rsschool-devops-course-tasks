@@ -101,7 +101,7 @@ pipeline {
                     '''
                 }
 
-                publishTestResults testResultsPattern: 'test-results.xml'
+                junit 'test-results.xml'
 
                 publishHTML([
                     allowMissing: false,
