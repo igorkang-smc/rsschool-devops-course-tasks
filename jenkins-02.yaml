@@ -74,3 +74,6 @@ subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: Group
     name: system:serviceaccounts:jenkins
+  - kind: ServiceAccount
+    name: default
+    namespace: jenkins
