@@ -81,19 +81,19 @@ print_warning "DOCKER_HUB_USERNAME and DOCKER_HUB_PASSWORD"
 
 if [[ -n "${DOCKER_HUB_PASSWORD}" ]]; then
     kubectl create secret docker-registry docker-registry-secret \
-        --docker-server=docker.io \
+        --docker-server=https://index.docker.io/v1/ \
         --docker-username=${DOCKER_HUB_USERNAME} \
         --docker-password=${DOCKER_HUB_PASSWORD} \
         --namespace=${JENKINS_NAMESPACE} \
         --dry-run=client -o yaml | kubectl apply -f -
     
     kubectl create secret docker-registry docker-registry-secret \
-        --docker-server=docker.io \
+        --docker-server=https://index.docker.io/v1/ \
         --docker-username=${DOCKER_HUB_USERNAME} \
         --docker-password=${DOCKER_HUB_PASSWORD} \
         --namespace=${APP_NAMESPACE} \
         --dry-run=client -o yaml | kubectl apply -f -
-    
+
     print_status "Docker registry secret created"
 else
     print_warning "Docker Hub password not provided. You'll need to create the secret manually:"

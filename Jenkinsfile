@@ -53,7 +53,7 @@ pipeline {
         IMAGE_TAG = "${DOCKER_HUB_REPO}/${APP_NAME}:${APP_VERSION}"
         IMAGE_LATEST = "${DOCKER_HUB_REPO}/${APP_NAME}:latest"
         K8S_NAMESPACE = 'default'
-        HELM_RELEASE_NAME = 'flask-app'
+        HELM_RELEASE_NAME = 'flask-chart'
         SONARQUBE_SERVER = 'sonarqube'
         SONAR_PROJECT_KEY = 'flask-cicd-demo'
         SLACK_CHANNEL = '#ai'
@@ -177,8 +177,8 @@ pipeline {
             steps {
                 container('helm') {
                     sh '''
-                        helm lint helm/flask-app
-                        helm template ${HELM_RELEASE_NAME} helm/flask-app \\
+                        helm lint helm/flask-chart
+                        helm template ${HELM_RELEASE_NAME} helm/flask-chart \\
                             --set image.repository=${DOCKER_HUB_REPO}/${APP_NAME} \\
                             --set image.tag=${APP_VERSION} \\
                             --set appVersion=${APP_VERSION} \\
@@ -198,8 +198,8 @@ pipeline {
             steps {
                 container('helm') {
                     sh '''
-                        helm dependency update helm/flask-app
-                        helm upgrade --install ${HELM_RELEASE_NAME} helm/flask-app \\
+                        helm dependency update helm/flask-chart
+                        helm upgrade --install ${HELM_RELEASE_NAME} helm/flask-chart \\
                             --namespace ${K8S_NAMESPACE} \\
                             --create-namespace \\
                             --set image.repository=${DOCKER_HUB_REPO}/${APP_NAME} \\
