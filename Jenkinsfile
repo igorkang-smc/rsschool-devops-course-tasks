@@ -122,7 +122,17 @@ pipeline {
             steps {
                 container('sonar') {
                     withSonarQubeEnv('SonarQube') {
-                        sh 'sonar-scanner'
+                        sh '''
+                            sonar-scanner \
+                                -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                                -Dsonar.projectName="Flask CI/CD Demo" \
+                                -Dsonar.projectVersion=${APP_VERSION} \
+                                -Dsonar.sources=. \
+                                -Dsonar.exclusions=tests/**,htmlcov/**,venv/**,helm/**,.git/** \
+                                -Dsonar.python.version=3.9 \
+                                -Dsonar.python.coverage.reportPaths=coverage.xml \
+                                -Dsonar.python.xunit.reportPath=test-results.xml
+                        '''
                     }
                 }
             }
