@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "flask-app.name" -}}
+{{- define "flask-chart.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "flask-app.fullname" -}}
+{{- define "flask-chart.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "flask-app.chart" -}}
+{{- define "flask-chart.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "flask-app.labels" -}}
-helm.sh/chart: {{ include "flask-app.chart" . }}
-{{ include "flask-app.selectorLabels" . }}
+{{- define "flask-chart.labels" -}}
+helm.sh/chart: {{ include "flask-chart.chart" . }}
+{{ include "flask-chart.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,8 +46,8 @@ app.kubernetes.io/part-of: flask-cicd-demo
 {{/*
 Selector labels
 */}}
-{{- define "flask-app.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "flask-app.name" . }}
+{{- define "flask-chart.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "flask-chart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 app: {{ .Values.app.name }}
 {{- end }}
@@ -55,9 +55,9 @@ app: {{ .Values.app.name }}
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "flask-app.serviceAccountName" -}}
+{{- define "flask-chart.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "flask-app.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "flask-chart.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

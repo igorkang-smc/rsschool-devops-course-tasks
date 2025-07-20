@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "flask-app.fullname" . }}
+  name: {{ include "flask-chart.fullname" . }}
   labels:
-    {{- include "flask-app.labels" . | nindent 4 }}
+    {{- include "flask-chart.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -15,7 +15,7 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      {{- include "flask-app.selectorLabels" . | nindent 6 }}
+      {{- include "flask-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -24,13 +24,13 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "flask-app.selectorLabels" . | nindent 8 }}
+        {{- include "flask-chart.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "flask-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "flask-chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -62,7 +62,7 @@ spec:
             - name: LOG_LEVEL
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "flask-app.fullname" . }}-config
+                  name: {{ include "flask-chart.fullname" . }}-config
                   key: LOG_LEVEL
             {{- end }}
           {{- if .Values.livenessProbe.enabled }}
@@ -97,7 +97,7 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: {{ include "flask-app.fullname" . }}-pvc
+            claimName: {{ include "flask-chart.fullname" . }}-pvc
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

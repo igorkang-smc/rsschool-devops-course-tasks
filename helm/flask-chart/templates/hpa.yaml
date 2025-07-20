@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "flask-app.fullname" . }}
+  name: {{ include "flask-chart.fullname" . }}
   labels:
-    {{- include "flask-app.labels" . | nindent 4 }}
+    {{- include "flask-chart.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "flask-app.fullname" . }}
+    name: {{ include "flask-chart.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
