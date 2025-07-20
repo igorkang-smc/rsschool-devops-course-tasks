@@ -84,7 +84,7 @@ fabric.properties
 # Ignore everything but code style settings and run configurations
 # that are supposed to be shared within teams.
 
-.idea/*
+../.idea/vcs.xml
 
 !.idea/codeStyles
 !.idea/runConfigurations
@@ -267,10 +267,7 @@ venv.bak/
 ehthumbs.db
 Thumbs.db
 
-# Jenkins
-jenkins-values.yaml
 sonarqube-values.yaml
-jenkins-rbac.yaml
 
 # Logs
 *.log
