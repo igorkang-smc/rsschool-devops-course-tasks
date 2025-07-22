@@ -214,7 +214,6 @@ pipeline {
             }
         }
 
-        // Application Verification and Smoke Tests omitted for brevity — let me know if ты хочешь, чтобы я добавил их тоже.
     }
 
     post {
