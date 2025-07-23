@@ -214,45 +214,38 @@ pipeline {
             }
         }
         stage('Smoke Test') {
-            agent {
-                kubernetes {
-                    yamlFile 'jenkins-pods/curl-pod.yaml'
-                    namespace "${K8S_NAMESPACE}"  // usually "default"
-                }
-            }
             steps {
-                container('curl') {
-                    script {
-                        def serviceName = env.HELM_RELEASE_NAME
-                        def namespace = env.K8S_NAMESPACE
-                        def servicePort = '5000'  // если Flask, скорее всего, порт 5000
+            container('kubectl') {
+              script {
+                def serviceName = env.HELM_RELEASE_NAME
+                def namespace = env.K8S_NAMESPACE
+                def servicePort = '5000'
+                def appUrl = "http://${serviceName}.${namespace}.svc.cluster.local:${servicePort}"
 
-                        def appUrl = "http://${serviceName}.${namespace}.svc.cluster.local:${servicePort}"
+                echo "Performing smoke test on: ${appUrl}"
 
-                        echo "Performing smoke test on: ${appUrl}"
+                def maxAttempts = 10
+                def attempt = 0
+                def success = false
 
-                        def maxAttempts = 10
-                        def attempt = 0
-                        def success = false
-
-                        while (attempt < maxAttempts && !success) {
-                            try {
-                                sh "curl -v --fail --max-time 10 ${appUrl}/"
-                                success = true
-                            } catch (Exception e) {
-                                echo "Attempt ${++attempt}/${maxAttempts} failed: ${e.message}"
-                                sleep 5
-                            }
-                        }
-
-                        if (!success) {
-                            error "Smoke test failed after ${maxAttempts} attempts."
-                        } else {
-                            echo "Smoke Test Passed!"
-                        }
-                    }
+                while (attempt < maxAttempts && !success) {
+                  try {
+                    sh "curl -v --fail --max-time 10 ${appUrl}/"
+                    success = true
+                  } catch (Exception e) {
+                    echo "Attempt ${++attempt}/${maxAttempts} failed: ${e.message}"
+                    sleep 5
+                  }
                 }
+
+                if (!success) {
+                  error "Smoke test failed after ${maxAttempts} attempts."
+                } else {
+                  echo "Smoke Test Passed!"
+                }
+              }
             }
+          }
         }
 
     }
