@@ -213,6 +213,26 @@ pipeline {
                 }
             }
         }
+        stage('Application Verification') {
+            steps {
+                container('kubectl') {
+                    script {
+                        sh '''
+                          echo "🧪 Verifying application after deployment..."
+                          kubectl rollout status deployment ${APP_NAME} -n ${K8S_NAMESPACE} --timeout=60s
+                          CLUSTER_IP=$(kubectl get svc ${APP_NAME} -n ${K8S_NAMESPACE} -o jsonpath="{.spec.clusterIP}")
+                          echo "Testing HTTP access to http://${CLUSTER_IP}:5000/"
+                          if curl -sf http://${CLUSTER_IP}:5000/; then
+                            echo "Application responded successfully."
+                          else
+                            echo "Application verification failed"
+                            exit 1
+                          fi
+                        '''
+                    }
+                }
+            }
+        }
 
     }
 
