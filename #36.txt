@@ -1,0 +1,1198 @@
+Started by user Jenkins Admin
+Obtained Jenkinsfile from git https://github.com/igorkang-smc/rsschool-devops-course-tasks
+[Pipeline] Start of Pipeline
+[Pipeline] podTemplate
+[Pipeline] {
+[Pipeline] node
+Created Pod: kubernetes jenkins/flask-cicd-demo-36-1br3b-v6p27-b14f6
+[PodInfo] jenkins/flask-cicd-demo-36-1br3b-v6p27-b14f6
+	Container [helm] waiting [ContainerCreating] No message
+	Container [jnlp] waiting [ContainerCreating] No message
+	Container [kaniko] waiting [ContainerCreating] No message
+	Container [kubectl] waiting [ContainerCreating] No message
+	Container [python] waiting [ContainerCreating] No message
+	Container [sonar] waiting [ContainerCreating] No message
+	Pod [Pending][ContainersNotReady] containers with unready status: [python kaniko helm kubectl sonar jnlp]
+Agent flask-cicd-demo-36-1br3b-v6p27-b14f6 is provisioned from template flask-cicd-demo_36-1br3b-v6p27
+---
+apiVersion: "v1"
+kind: "Pod"
+metadata:
+  annotations:
+    kubernetes.jenkins.io/last-refresh: "1753275401867"
+    buildUrl: "http://jenkins.jenkins.svc.cluster.local:8080/job/flask-cicd-demo/36/"
+    runUrl: "job/flask-cicd-demo/36/"
+  labels:
+    jenkins/jenkins-jenkins-agent: "true"
+    jenkins/label-digest: "d0dca378dfd1c35743ab12897eda39d92ef7364c"
+    jenkins/label: "flask-cicd-demo_36-1br3b"
+    kubernetes.jenkins.io/controller: "http___jenkins_jenkins_svc_cluster_local_8080x"
+  name: "flask-cicd-demo-36-1br3b-v6p27-b14f6"
+  namespace: "jenkins"
+spec:
+  containers:
+  - args:
+    - "99d"
+    command:
+    - "sleep"
+    image: "python:3.9-slim"
+    name: "python"
+    tty: true
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - args:
+    - "99d"
+    command:
+    - "sleep"
+    image: "gcr.io/kaniko-project/executor:debug"
+    imagePullPolicy: "Always"
+    name: "kaniko"
+    tty: true
+    volumeMounts:
+    - mountPath: "/kaniko/.docker"
+      name: "docker-config"
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - args:
+    - "99d"
+    command:
+    - "sleep"
+    image: "alpine/helm:3.12.0"
+    name: "helm"
+    tty: true
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - args:
+    - "99d"
+    command:
+    - "sleep"
+    image: "bitnami/kubectl:latest"
+    name: "kubectl"
+    tty: true
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - args:
+    - "99d"
+    command:
+    - "sleep"
+    image: "sonarsource/sonar-scanner-cli:latest"
+    name: "sonar"
+    tty: true
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - env:
+    - name: "JENKINS_SECRET"
+      value: "********"
+    - name: "JENKINS_TUNNEL"
+      value: "jenkins-agent.jenkins.svc.cluster.local:50000"
+    - name: "JENKINS_AGENT_NAME"
+      value: "flask-cicd-demo-36-1br3b-v6p27-b14f6"
+    - name: "REMOTING_OPTS"
+      value: "-noReconnectAfter 1d"
+    - name: "JENKINS_NAME"
+      value: "flask-cicd-demo-36-1br3b-v6p27-b14f6"
+    - name: "JENKINS_AGENT_WORKDIR"
+      value: "/home/jenkins/agent"
+    - name: "JENKINS_URL"
+      value: "http://jenkins.jenkins.svc.cluster.local:8080/"
+    image: "jenkins/inbound-agent:3309.v27b_9314fd1a_4-1"
+    name: "jnlp"
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  nodeSelector:
+    kubernetes.io/os: "linux"
+  restartPolicy: "Never"
+  volumes:
+  - name: "docker-config"
+    secret:
+      items:
+      - key: ".dockerconfigjson"
+        path: "config.json"
+      secretName: "docker-registry-secret"
+  - emptyDir:
+      medium: ""
+    name: "workspace-volume"
+
+Running on flask-cicd-demo-36-1br3b-v6p27-b14f6 in /home/jenkins/agent/workspace/flask-cicd-demo
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/igorkang-smc/rsschool-devops-course-tasks
+ > git init /home/jenkins/agent/workspace/flask-cicd-demo # timeout=10
+Fetching upstream changes from https://github.com/igorkang-smc/rsschool-devops-course-tasks
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.5'
+ > git fetch --tags --force --progress -- https://github.com/igorkang-smc/rsschool-devops-course-tasks +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/igorkang-smc/rsschool-devops-course-tasks # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision 367aaead598d4dc177cab7d49be0b7e51027be11 (refs/remotes/origin/task_6)
+Commit message: "rsschool-devops-task_6"
+ > git rev-parse refs/remotes/origin/task_6^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 367aaead598d4dc177cab7d49be0b7e51027be11 # timeout=10
+ > git rev-list --no-walk ee6593dc6a0df7ee5db03d6df4c063bd269cfa9d # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timeout
+Timeout set to expire in 30 min
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] ansiColor
+[Pipeline] {
+[2025-07-23T12:56:54.680Z]
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+[2025-07-23T12:56:54.721Z] Selected Git installation does not exist. Using Default
+[2025-07-23T12:56:54.721Z] The recommended git tool is: NONE
+[2025-07-23T12:56:54.746Z] No credentials specified
+[2025-07-23T12:56:54.749Z] Fetching changes from the remote Git repository
+[2025-07-23T12:56:55.342Z] Checking out Revision 367aaead598d4dc177cab7d49be0b7e51027be11 (refs/remotes/origin/task_6)
+[2025-07-23T12:56:55.357Z] Commit message: "rsschool-devops-task_6"
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+[2025-07-23T12:56:54.746Z]  > git rev-parse --resolve-git-dir /home/jenkins/agent/workspace/flask-cicd-demo/.git # timeout=10
+[2025-07-23T12:56:54.755Z]  > git config remote.origin.url https://github.com/igorkang-smc/rsschool-devops-course-tasks # timeout=10
+[2025-07-23T12:56:54.761Z] Fetching upstream changes from https://github.com/igorkang-smc/rsschool-devops-course-tasks
+[2025-07-23T12:56:54.761Z]  > git --version # timeout=10
+[2025-07-23T12:56:54.762Z]  > git --version # 'git version 2.39.5'
+[2025-07-23T12:56:54.762Z]  > git fetch --tags --force --progress -- https://github.com/igorkang-smc/rsschool-devops-course-tasks +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2025-07-23T12:56:55.338Z]  > git rev-parse refs/remotes/origin/task_6^{commit} # timeout=10
+[2025-07-23T12:56:55.344Z]  > git config core.sparsecheckout # timeout=10
+[2025-07-23T12:56:55.346Z]  > git checkout -f 367aaead598d4dc177cab7d49be0b7e51027be11 # timeout=10
+[2025-07-23T12:56:55.868Z] + git rev-parse --short HEAD
+[Pipeline] sh
+[2025-07-23T12:56:56.164Z] + date -u +%Y-%m-%dT%H:%M:%SZ
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Application Build)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
+[2025-07-23T12:56:56.838Z] + echo Installing dependencies...
+[2025-07-23T12:56:56.838Z] Installing dependencies...
+[2025-07-23T12:56:56.838Z] + pip install --no-cache-dir -r requirements.txt
+[2025-07-23T12:56:57.765Z] Collecting Flask==2.3.3
+[2025-07-23T12:56:58.020Z]   Downloading flask-2.3.3-py3-none-any.whl (96 kB)
+[2025-07-23T12:56:58.020Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 96.1/96.1 kB 10.4 MB/s eta 0:00:00
+[2025-07-23T12:56:58.020Z] Collecting Werkzeug==2.3.7
+[2025-07-23T12:56:58.020Z]   Downloading werkzeug-2.3.7-py3-none-any.whl (242 kB)
+[2025-07-23T12:56:58.020Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 242.2/242.2 kB 13.4 MB/s eta 0:00:00
+[2025-07-23T12:56:58.020Z] Collecting pytest==7.4.2
+[2025-07-23T12:56:58.020Z]   Downloading pytest-7.4.2-py3-none-any.whl (324 kB)
+[2025-07-23T12:56:58.020Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 324.5/324.5 kB 17.3 MB/s eta 0:00:00
+[2025-07-23T12:56:58.577Z] Collecting pytest-flask==1.2.0
+[2025-07-23T12:56:58.577Z]   Downloading pytest_flask-1.2.0-py3-none-any.whl (10 kB)
+[2025-07-23T12:56:58.577Z] Collecting pytest-cov==4.1.0
+[2025-07-23T12:56:58.577Z]   Downloading pytest_cov-4.1.0-py3-none-any.whl (21 kB)
+[2025-07-23T12:56:58.835Z] Collecting requests==2.31.0
+[2025-07-23T12:56:58.835Z]   Downloading requests-2.31.0-py3-none-any.whl (62 kB)
+[2025-07-23T12:56:58.835Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.6/62.6 kB 33.6 MB/s eta 0:00:00
+[2025-07-23T12:56:58.835Z] Collecting importlib-metadata>=3.6.0
+[2025-07-23T12:56:58.835Z]   Downloading importlib_metadata-8.7.0-py3-none-any.whl (27 kB)
+[2025-07-23T12:56:58.835Z] Collecting blinker>=1.6.2
+[2025-07-23T12:56:58.835Z]   Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+[2025-07-23T12:56:58.835Z] Collecting click>=8.1.3
+[2025-07-23T12:56:58.835Z]   Downloading click-8.1.8-py3-none-any.whl (98 kB)
+[2025-07-23T12:56:58.835Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.2/98.2 kB 37.0 MB/s eta 0:00:00
+[2025-07-23T12:56:59.093Z] Collecting itsdangerous>=2.1.2
+[2025-07-23T12:56:59.093Z]   Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+[2025-07-23T12:56:59.093Z] Collecting Jinja2>=3.1.2
+[2025-07-23T12:56:59.093Z]   Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+[2025-07-23T12:56:59.093Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 25.8 MB/s eta 0:00:00
+[2025-07-23T12:56:59.093Z] Collecting MarkupSafe>=2.1.1
+[2025-07-23T12:56:59.093Z]   Downloading MarkupSafe-3.0.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (21 kB)
+[2025-07-23T12:56:59.093Z] Collecting iniconfig
+[2025-07-23T12:56:59.093Z]   Downloading iniconfig-2.1.0-py3-none-any.whl (6.0 kB)
+[2025-07-23T12:56:59.093Z] Collecting tomli>=1.0.0
+[2025-07-23T12:56:59.093Z]   Downloading tomli-2.2.1-py3-none-any.whl (14 kB)
+[2025-07-23T12:56:59.093Z] Collecting pluggy<2.0,>=0.12
+[2025-07-23T12:56:59.093Z]   Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+[2025-07-23T12:56:59.093Z] Collecting exceptiongroup>=1.0.0rc8
+[2025-07-23T12:56:59.093Z]   Downloading exceptiongroup-1.3.0-py3-none-any.whl (16 kB)
+[2025-07-23T12:56:59.093Z] Collecting packaging
+[2025-07-23T12:56:59.093Z]   Downloading packaging-25.0-py3-none-any.whl (66 kB)
+[2025-07-23T12:56:59.093Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.5/66.5 kB 46.5 MB/s eta 0:00:00
+[2025-07-23T12:56:59.653Z] Collecting coverage[toml]>=5.2.1
+[2025-07-23T12:56:59.653Z]   Downloading coverage-7.9.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (241 kB)
+[2025-07-23T12:56:59.653Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 241.2/241.2 kB 19.2 MB/s eta 0:00:00
+[2025-07-23T12:56:59.653Z] Collecting urllib3<3,>=1.21.1
+[2025-07-23T12:56:59.653Z]   Downloading urllib3-2.5.0-py3-none-any.whl (129 kB)
+[2025-07-23T12:56:59.653Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 129.8/129.8 kB 29.8 MB/s eta 0:00:00
+[2025-07-23T12:56:59.653Z] Collecting charset-normalizer<4,>=2
+[2025-07-23T12:56:59.653Z]   Downloading charset_normalizer-3.4.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (144 kB)
+[2025-07-23T12:56:59.653Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 144.7/144.7 kB 22.4 MB/s eta 0:00:00
+[2025-07-23T12:56:59.653Z] Collecting certifi>=2017.4.17
+[2025-07-23T12:56:59.653Z]   Downloading certifi-2025.7.14-py3-none-any.whl (162 kB)
+[2025-07-23T12:56:59.653Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.7/162.7 kB 26.0 MB/s eta 0:00:00
+[2025-07-23T12:56:59.653Z] Collecting idna<4,>=2.5
+[2025-07-23T12:56:59.653Z]   Downloading idna-3.10-py3-none-any.whl (70 kB)
+[2025-07-23T12:56:59.653Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 70.4/70.4 kB 90.2 MB/s eta 0:00:00
+[2025-07-23T12:56:59.653Z] Collecting typing-extensions>=4.6.0
+[2025-07-23T12:56:59.653Z]   Downloading typing_extensions-4.14.1-py3-none-any.whl (43 kB)
+[2025-07-23T12:56:59.653Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.9/43.9 kB 264.0 MB/s eta 0:00:00
+[2025-07-23T12:56:59.909Z] Collecting zipp>=3.20
+[2025-07-23T12:56:59.909Z]   Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+[2025-07-23T12:56:59.909Z] Installing collected packages: zipp, urllib3, typing-extensions, tomli, pluggy, packaging, MarkupSafe, itsdangerous, iniconfig, idna, coverage, click, charset-normalizer, certifi, blinker, Werkzeug, requests, Jinja2, importlib-metadata, exceptiongroup, pytest, Flask, pytest-flask, pytest-cov
+[2025-07-23T12:57:00.468Z] Successfully installed Flask-2.3.3 Jinja2-3.1.6 MarkupSafe-3.0.2 Werkzeug-2.3.7 blinker-1.9.0 certifi-2025.7.14 charset-normalizer-3.4.2 click-8.1.8 coverage-7.9.2 exceptiongroup-1.3.0 idna-3.10 importlib-metadata-8.7.0 iniconfig-2.1.0 itsdangerous-2.2.0 packaging-25.0 pluggy-1.6.0 pytest-7.4.2 pytest-cov-4.1.0 pytest-flask-1.2.0 requests-2.31.0 tomli-2.2.1 typing-extensions-4.14.1 urllib3-2.5.0 zipp-3.23.0
+[2025-07-23T12:57:00.469Z] WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+[2025-07-23T12:57:00.469Z]
+[2025-07-23T12:57:00.469Z] [notice] A new release of pip is available: 23.0.1 -> 25.1.1
+[2025-07-23T12:57:00.469Z] [notice] To update, run: pip install --upgrade pip
+[2025-07-23T12:57:00.725Z] + echo Checking Python syntax...
+[2025-07-23T12:57:00.725Z] Checking Python syntax...
+[2025-07-23T12:57:00.725Z] + python -m py_compile app.py
+[2025-07-23T12:57:00.725Z] + echo Build completed successfully!
+[2025-07-23T12:57:00.725Z] Build completed successfully!
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Unit Tests)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
+[2025-07-23T12:57:01.377Z] + echo Running unit tests with coverage...
+[2025-07-23T12:57:01.377Z] Running unit tests with coverage...
+[2025-07-23T12:57:01.377Z] + python -m pytest tests/ -v --junitxml=test-results.xml --cov=app --cov-report=xml --cov-report=html
+[2025-07-23T12:57:01.637Z] ============================= test session starts ==============================
+[2025-07-23T12:57:01.637Z] platform linux -- Python 3.9.23, pytest-7.4.2, pluggy-1.6.0 -- /usr/local/bin/python
+[2025-07-23T12:57:01.637Z] cachedir: .pytest_cache
+[2025-07-23T12:57:01.637Z] rootdir: /home/jenkins/agent/workspace/flask-cicd-demo
+[2025-07-23T12:57:01.637Z] configfile: pytest.ini
+[2025-07-23T12:57:01.637Z] plugins: flask-1.2.0, cov-4.1.0
+[2025-07-23T12:57:01.637Z] collecting ... collected 10 items
+[2025-07-23T12:57:01.637Z]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_index_page PASSED                  [ 10%]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_health_endpoint PASSED             [ 20%]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_api_status_endpoint PASSED         [ 30%]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_api_info_endpoint PASSED           [ 40%]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_404_error_handler PASSED           [ 50%]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_health_endpoint_structure PASSED   [ 60%]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_api_endpoints_return_json PASSED   [ 70%]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_environment_variables PASSED       [ 80%]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_main_page_contains_endpoints_info PASSED [ 90%]
+[2025-07-23T12:57:01.637Z] tests/test_app.py::TestFlaskApp::test_cors_headers PASSED                [100%]
+[2025-07-23T12:57:01.637Z]
+[2025-07-23T12:57:01.637Z] - generated xml file: /home/jenkins/agent/workspace/flask-cicd-demo/test-results.xml -
+[2025-07-23T12:57:01.637Z]
+[2025-07-23T12:57:01.637Z] ---------- coverage: platform linux, python 3.9.23-final-0 -----------
+[2025-07-23T12:57:01.637Z] Coverage HTML written to dir htmlcov
+[2025-07-23T12:57:01.637Z] Coverage XML written to file coverage.xml
+[2025-07-23T12:57:01.637Z]
+[2025-07-23T12:57:01.637Z] ============================== 10 passed in 0.12s ==============================
+[2025-07-23T12:57:01.637Z] + echo Tests completed!
+[2025-07-23T12:57:01.637Z] Tests completed!
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] junit
+[2025-07-23T12:57:01.684Z] Recording test results
+[2025-07-23T12:57:01.970Z] [Checks API] No suitable checks publisher found.
+[Pipeline] publishHTML
+[2025-07-23T12:57:01.984Z] [htmlpublisher] Archiving HTML reports...
+[2025-07-23T12:57:01.986Z] [htmlpublisher] Archiving at BUILD level /home/jenkins/agent/workspace/flask-cicd-demo/htmlcov to Coverage_20Report
+[2025-07-23T12:57:01.986Z] [htmlpublisher] Copying recursive using current thread
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Code Quality - SonarQube)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] withSonarQubeEnv
+[2025-07-23T12:57:02.093Z] Injecting SonarQube environment variables using the configuration: SonarQube
+[Pipeline] {
+[Pipeline] sh
+[2025-07-23T12:57:02.611Z] + sonar-scanner -Dsonar.projectKey=flask-cicd-demo '-Dsonar.projectName=Flask CI/CD Demo' -Dsonar.projectVersion=36 -Dsonar.sources=. '-Dsonar.exclusions=tests/**,htmlcov/**,venv/**,helm/**,.git/**' -Dsonar.python.version=3.9 -Dsonar.python.coverage.reportPaths=coverage.xml -Dsonar.python.xunit.reportPath=test-results.xml
+[2025-07-23T12:57:03.539Z] 12:57:03.351 INFO  Scanner configuration file: /opt/sonar-scanner/conf/sonar-scanner.properties
+[2025-07-23T12:57:03.539Z] 12:57:03.355 INFO  Project root configuration file: /home/jenkins/agent/workspace/flask-cicd-demo/sonar-project.properties
+[2025-07-23T12:57:03.539Z] 12:57:03.383 INFO  SonarScanner CLI 7.2.0.5079
+[2025-07-23T12:57:03.539Z] 12:57:03.389 INFO  Linux 6.14.10-orbstack-00291-g1b252bd3edea amd64
+[2025-07-23T12:57:05.436Z] 12:57:04.940 INFO  Communicating with SonarQube Community Build 25.5.0.107428
+[2025-07-23T12:57:05.436Z] 12:57:04.943 INFO  JRE provisioning: os[linux], arch[x86_64]
+[2025-07-23T12:57:07.998Z] 12:57:07.945 INFO  Starting SonarScanner Engine...
+[2025-07-23T12:57:07.998Z] 12:57:07.948 INFO  Java 17.0.13 Eclipse Adoptium (64-bit)
+[2025-07-23T12:57:09.912Z] 12:57:09.766 INFO  Load global settings
+[2025-07-23T12:57:10.172Z] 12:57:09.962 INFO  Load global settings (done) | time=202ms
+[2025-07-23T12:57:10.172Z] 12:57:09.966 INFO  Server id: EA8D9556-AZgnEobLetdPckFFRpHF
+[2025-07-23T12:57:10.172Z] 12:57:09.988 INFO  Loading required plugins
+[2025-07-23T12:57:10.172Z] 12:57:09.988 INFO  Load plugins index
+[2025-07-23T12:57:10.172Z] 12:57:10.129 INFO  Load plugins index (done) | time=126ms
+[2025-07-23T12:57:10.172Z] 12:57:10.130 INFO  Load/download plugins
+[2025-07-23T12:57:11.557Z] 12:57:11.452 INFO  Load/download plugins (done) | time=1324ms
+[2025-07-23T12:57:12.120Z] 12:57:11.939 INFO  Process project properties
+[2025-07-23T12:57:12.120Z] 12:57:11.950 INFO  Process project properties (done) | time=11ms
+[2025-07-23T12:57:12.120Z] 12:57:11.963 INFO  Project key: flask-cicd-demo
+[2025-07-23T12:57:12.120Z] 12:57:11.978 INFO  Base dir: /home/jenkins/agent/workspace/flask-cicd-demo
+[2025-07-23T12:57:12.120Z] 12:57:11.978 INFO  Working dir: /home/jenkins/agent/workspace/flask-cicd-demo/.scannerwork
+[2025-07-23T12:57:12.120Z] 12:57:11.983 INFO  Load project settings for component key: 'flask-cicd-demo'
+[2025-07-23T12:57:12.120Z] 12:57:12.014 INFO  Load project settings for component key: 'flask-cicd-demo' (done) | time=31ms
+[2025-07-23T12:57:12.120Z] 12:57:12.048 INFO  Load quality profiles
+[2025-07-23T12:57:12.380Z] 12:57:12.137 INFO  Load quality profiles (done) | time=89ms
+[2025-07-23T12:57:12.380Z] 12:57:12.153 INFO  Auto-configuring with CI 'Jenkins'
+[2025-07-23T12:57:12.380Z] 12:57:12.180 INFO  Load active rules
+[2025-07-23T12:57:12.641Z] 12:57:12.561 INFO  Load active rules (done) | time=382ms
+[2025-07-23T12:57:12.641Z] 12:57:12.594 INFO  Load analysis cache
+[2025-07-23T12:57:12.641Z] 12:57:12.614 INFO  Load analysis cache (4.2 kB) | time=23ms
+[2025-07-23T12:57:12.903Z] 12:57:12.735 INFO  Preprocessing files...
+[2025-07-23T12:57:13.166Z] 12:57:12.964 INFO  3 languages detected in 15 preprocessed files
+[2025-07-23T12:57:13.166Z] 12:57:12.967 INFO  22 files ignored because of inclusion/exclusion patterns
+[2025-07-23T12:57:13.166Z] 12:57:12.968 INFO  3 files ignored because of scm ignore settings
+[2025-07-23T12:57:13.166Z] 12:57:12.981 INFO  Loading plugins for detected languages
+[2025-07-23T12:57:13.166Z] 12:57:12.982 INFO  Load/download plugins
+[2025-07-23T12:57:14.101Z] 12:57:13.826 INFO  Load/download plugins (done) | time=842ms
+[2025-07-23T12:57:14.360Z] 12:57:14.185 INFO  Load project repositories
+[2025-07-23T12:57:14.360Z] 12:57:14.254 INFO  Load project repositories (done) | time=71ms
+[2025-07-23T12:57:14.360Z] 12:57:14.281 INFO  Indexing files...
+[2025-07-23T12:57:14.360Z] 12:57:14.282 INFO  Project configuration:
+[2025-07-23T12:57:14.360Z] 12:57:14.282 INFO    Excluded sources: tests/**, htmlcov/**, venv/**, helm/**, .git/**
+[2025-07-23T12:57:14.360Z] 12:57:14.307 INFO  15 files indexed
+[2025-07-23T12:57:14.360Z] 12:57:14.308 INFO  Quality profile for docker: Sonar way
+[2025-07-23T12:57:14.360Z] 12:57:14.308 INFO  Quality profile for py: Sonar way
+[2025-07-23T12:57:14.360Z] 12:57:14.308 INFO  Quality profile for yaml: Sonar way
+[2025-07-23T12:57:14.360Z] 12:57:14.308 INFO  ------------- Run sensors on module Flask CI/CD Demo
+[2025-07-23T12:57:14.713Z] 12:57:14.405 INFO  Load metrics repository
+[2025-07-23T12:57:14.713Z] 12:57:14.495 INFO  Load metrics repository (done) | time=79ms
+[2025-07-23T12:57:15.684Z] 12:57:15.555 INFO  Sensor JaCoCo XML Report Importer [jacoco]
+[2025-07-23T12:57:15.684Z] 12:57:15.558 INFO  'sonar.coverage.jacoco.xmlReportPaths' is not defined. Using default locations: target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,build/reports/jacoco/test/jacocoTestReport.xml
+[2025-07-23T12:57:15.684Z] 12:57:15.559 INFO  No report imported, no coverage information will be imported by JaCoCo XML Report Importer
+[2025-07-23T12:57:15.684Z] 12:57:15.559 INFO  Sensor JaCoCo XML Report Importer [jacoco] (done) | time=6ms
+[2025-07-23T12:57:15.684Z] 12:57:15.559 INFO  Sensor IaC CloudFormation Sensor [iac]
+[2025-07-23T12:57:15.684Z] 12:57:15.614 INFO  0 source files to be analyzed
+[2025-07-23T12:57:15.684Z] 12:57:15.626 INFO  0/0 source files have been analyzed
+[2025-07-23T12:57:15.684Z] 12:57:15.627 INFO  Sensor IaC CloudFormation Sensor [iac] (done) | time=67ms
+[2025-07-23T12:57:15.684Z] 12:57:15.627 INFO  Sensor IaC Kubernetes Sensor [iac]
+[2025-07-23T12:57:15.940Z] 12:57:15.753 INFO  3 source files to be parsed
+[2025-07-23T12:57:15.940Z] 12:57:15.859 INFO  3/3 source files have been parsed
+[2025-07-23T12:57:15.940Z] 12:57:15.860 INFO  3 source files to be analyzed
+[2025-07-23T12:57:16.198Z] 12:57:16.013 INFO  3/3 source files have been analyzed
+[2025-07-23T12:57:16.199Z] 12:57:16.014 INFO  3 source files to be checked
+[2025-07-23T12:57:16.199Z] 12:57:16.067 INFO  3/3 source files have been checked
+[2025-07-23T12:57:16.199Z] 12:57:16.069 INFO  Sensor IaC Kubernetes Sensor [iac] (done) | time=443ms
+[2025-07-23T12:57:16.199Z] 12:57:16.071 INFO  Sensor Java Config Sensor [iac]
+[2025-07-23T12:57:16.199Z] 12:57:16.082 INFO  0 source files to be analyzed
+[2025-07-23T12:57:16.199Z] 12:57:16.084 INFO  0/0 source files have been analyzed
+[2025-07-23T12:57:16.199Z] 12:57:16.085 INFO  Sensor Java Config Sensor [iac] (done) | time=14ms
+[2025-07-23T12:57:16.199Z] 12:57:16.086 INFO  Sensor Python Sensor [python]
+[2025-07-23T12:57:16.199Z] 12:57:16.100 INFO  Starting global symbols computation
+[2025-07-23T12:57:16.199Z] 12:57:16.102 INFO  1 source file to be analyzed
+[2025-07-23T12:57:17.132Z] 12:57:16.781 INFO  1/1 source file has been analyzed
+[2025-07-23T12:57:17.132Z] 12:57:16.797 INFO  Starting rules execution
+[2025-07-23T12:57:17.132Z] 12:57:16.798 INFO  1 source file to be analyzed
+[2025-07-23T12:57:17.718Z] 12:57:17.572 INFO  1/1 source file has been analyzed
+[2025-07-23T12:57:17.718Z] 12:57:17.576 INFO  The Python analyzer was able to leverage cached data from previous analyses for 0 out of 1 files. These files were not parsed.
+[2025-07-23T12:57:17.718Z] 12:57:17.576 INFO  Sensor Python Sensor [python] (done) | time=1491ms
+[2025-07-23T12:57:17.718Z] 12:57:17.577 INFO  Sensor Cobertura Sensor for Python coverage [python]
+[2025-07-23T12:57:17.718Z] 12:57:17.597 INFO  Python test coverage
+[2025-07-23T12:57:17.718Z] 12:57:17.602 INFO  Parsing report '/home/jenkins/agent/workspace/flask-cicd-demo/coverage.xml'
+[2025-07-23T12:57:17.718Z] 12:57:17.646 INFO  Sensor Cobertura Sensor for Python coverage [python] (done) | time=71ms
+[2025-07-23T12:57:17.718Z] 12:57:17.647 INFO  Sensor PythonXUnitSensor [python]
+[2025-07-23T12:57:17.718Z] 12:57:17.655 INFO  Processing report '/home/jenkins/agent/workspace/flask-cicd-demo/test-results.xml'
+[2025-07-23T12:57:17.718Z] 12:57:17.660 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.662 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.664 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.664 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.664 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.664 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.665 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.665 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.665 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.665 WARN  The resource for 'tests.test_app.TestFlaskApp' is not found, drilling down to the details of this test won't be possible
+[2025-07-23T12:57:17.718Z] 12:57:17.665 INFO  Sensor PythonXUnitSensor [python] (done) | time=13ms
+[2025-07-23T12:57:17.718Z] 12:57:17.665 INFO  Sensor Python Dependency Sensor [python]
+[2025-07-23T12:57:17.718Z] 12:57:17.676 INFO  Sensor Python Dependency Sensor [python] (done) | time=16ms
+[2025-07-23T12:57:17.718Z] 12:57:17.678 INFO  Sensor JavaScript inside YAML analysis [javascript]
+[2025-07-23T12:57:17.978Z] 12:57:17.734 INFO  No input files found for analysis
+[2025-07-23T12:57:17.978Z] 12:57:17.735 INFO  Hit the cache for 0 out of 0
+[2025-07-23T12:57:17.978Z] 12:57:17.743 INFO  Miss the cache for 0 out of 0
+[2025-07-23T12:57:17.978Z] 12:57:17.745 INFO  Sensor JavaScript inside YAML analysis [javascript] (done) | time=63ms
+[2025-07-23T12:57:17.978Z] 12:57:17.746 INFO  Sensor CSS Rules [javascript]
+[2025-07-23T12:57:17.978Z] 12:57:17.746 INFO  No CSS, PHP, HTML or VueJS files are found in the project. CSS analysis is skipped.
+[2025-07-23T12:57:17.978Z] 12:57:17.746 INFO  Sensor CSS Rules [javascript] (done) | time=1ms
+[2025-07-23T12:57:17.978Z] 12:57:17.751 INFO  Sensor IaC Docker Sensor [iac]
+[2025-07-23T12:57:17.978Z] 12:57:17.886 INFO  1 source file to be analyzed
+[2025-07-23T12:57:18.238Z] 12:57:18.200 INFO  1/1 source file has been analyzed
+[2025-07-23T12:57:18.238Z] 12:57:18.201 INFO  Sensor IaC Docker Sensor [iac] (done) | time=460ms
+[2025-07-23T12:57:18.238Z] 12:57:18.201 INFO  Sensor TextAndSecretsSensor [text]
+[2025-07-23T12:57:18.238Z] 12:57:18.203 INFO  Available processors: 8
+[2025-07-23T12:57:18.238Z] 12:57:18.203 INFO  Using 8 threads for analysis.
+[2025-07-23T12:57:18.805Z] 12:57:18.612 INFO  The property "sonar.tests" is not set. To improve the analysis accuracy, we categorize a file as a test file if any of the following is true:
+[2025-07-23T12:57:18.805Z]   * The filename starts with "test"
+[2025-07-23T12:57:18.805Z]   * The filename contains "test." or "tests."
+[2025-07-23T12:57:18.805Z]   * Any directory in the file path is named: "doc", "docs", "test" or "tests"
+[2025-07-23T12:57:18.805Z]   * Any directory in the file path has a name ending in "test" or "tests"
+[2025-07-23T12:57:18.805Z]
+[2025-07-23T12:57:18.805Z] 12:57:18.679 INFO  Using git CLI to retrieve untracked files
+[2025-07-23T12:57:18.805Z] 12:57:18.752 INFO  Analyzing language associated files and files included via "sonar.text.inclusions" that are tracked by git
+[2025-07-23T12:57:19.066Z] 12:57:18.904 INFO  10 source files to be analyzed
+[2025-07-23T12:57:19.326Z] 12:57:19.165 INFO  10/10 source files have been analyzed
+[2025-07-23T12:57:19.326Z] 12:57:19.170 INFO  Sensor TextAndSecretsSensor [text] (done) | time=967ms
+[2025-07-23T12:57:19.326Z] 12:57:19.181 INFO  ------------- Run sensors on project
+[2025-07-23T12:57:19.586Z] 12:57:19.334 INFO  Sensor Zero Coverage Sensor
+[2025-07-23T12:57:19.586Z] 12:57:19.335 INFO  Sensor Zero Coverage Sensor (done) | time=1ms
+[2025-07-23T12:57:19.586Z] 12:57:19.335 INFO  ------------- Gather SCA dependencies on project
+[2025-07-23T12:57:19.586Z] 12:57:19.341 INFO  Dependency analysis skipped
+[2025-07-23T12:57:19.586Z] 12:57:19.354 INFO  SCM Publisher SCM provider for this project is: git
+[2025-07-23T12:57:19.586Z] 12:57:19.355 INFO  SCM Publisher 1 source file to be analyzed
+[2025-07-23T12:57:19.845Z] 12:57:19.687 INFO  SCM Publisher 1/1 source file have been analyzed (done) | time=330ms
+[2025-07-23T12:57:19.845Z] 12:57:19.705 INFO  CPD Executor Calculating CPD for 1 file
+[2025-07-23T12:57:19.845Z] 12:57:19.713 INFO  CPD Executor CPD calculation finished (done) | time=6ms
+[2025-07-23T12:57:19.845Z] 12:57:19.717 INFO  SCM revision ID '367aaead598d4dc177cab7d49be0b7e51027be11'
+[2025-07-23T12:57:20.111Z] 12:57:19.910 INFO  Analysis report generated in 182ms, dir size=261.5 kB
+[2025-07-23T12:57:20.111Z] 12:57:19.931 INFO  Analysis report compressed in 22ms, zip size=41.3 kB
+[2025-07-23T12:57:20.111Z] 12:57:20.048 INFO  Analysis report uploaded in 114ms
+[2025-07-23T12:57:20.111Z] 12:57:20.069 INFO  ------------- Check Quality Gate status
+[2025-07-23T12:57:20.111Z] 12:57:20.070 INFO  Waiting for the analysis report to be processed (max 300s)
+[2025-07-23T12:57:25.378Z] 12:57:25.247 INFO  QUALITY GATE STATUS: PASSED - View details on http://sonarqube-sonarqube.jenkins.svc.cluster.local:9000/dashboard?id=flask-cicd-demo
+[2025-07-23T12:57:25.378Z] 12:57:25.310 INFO  Analysis total time: 13.742 s
+[2025-07-23T12:57:25.378Z] 12:57:25.316 INFO  SonarScanner Engine completed successfully
+[2025-07-23T12:57:25.949Z] 12:57:25.722 INFO  EXECUTION SUCCESS
+[2025-07-23T12:57:25.949Z] 12:57:25.732 INFO  Total time: 22.450s
+[Pipeline] }
+[Pipeline] // withSonarQubeEnv
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Quality Gate)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] timeout
+[2025-07-23T12:57:26.245Z] Timeout set to expire in 5 min 0 sec
+[Pipeline] {
+[Pipeline] waitForQualityGate
+[2025-07-23T12:57:26.257Z] Checking status of SonarQube task '3557434e-7fab-458e-9bea-7e418f481a97' on server 'SonarQube'
+[2025-07-23T12:57:26.268Z] SonarQube task '3557434e-7fab-458e-9bea-7e418f481a97' status is 'SUCCESS'
+[2025-07-23T12:57:26.279Z] SonarQube task '3557434e-7fab-458e-9bea-7e418f481a97' completed. Quality gate is 'OK'
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Docker Image Build & Push)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
+[2025-07-23T12:57:26.987Z] + echo 'Building Docker image with Kaniko...'
+[2025-07-23T12:57:26.987Z] Building Docker image with Kaniko...
+[2025-07-23T12:57:26.987Z] + /kaniko/executor '--dockerfile=Dockerfile' '--context=dir:///home/jenkins/agent/workspace/flask-cicd-demo' '--destination=elfkid/flask-cicd-demo:36' '--destination=elfkid/flask-cicd-demo:latest' --build-arg 'APP_VERSION=36' --build-arg 'BUILD_DATE=2025-07-23T12:56:55Z' --build-arg 'VCS_REF=367aaea' '--cache=true' '--cache-ttl=24h' --cleanup
+[2025-07-23T12:57:28.954Z] [36mINFO[0m[0001] Resolved base name python:3.9-slim to builder
+[2025-07-23T12:57:28.954Z] [36mINFO[0m[0001] Resolved base name python:3.9-slim to production
+[2025-07-23T12:57:28.954Z] [36mINFO[0m[0001] Retrieving image manifest python:3.9-slim
+[2025-07-23T12:57:28.954Z] [36mINFO[0m[0001] Retrieving image python:3.9-slim from registry index.docker.io
+[2025-07-23T12:57:30.855Z] [36mINFO[0m[0003] Retrieving image manifest python:3.9-slim
+[2025-07-23T12:57:30.855Z] [36mINFO[0m[0003] Returning cached image manifest
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Retrieving image manifest python:3.9-slim
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Returning cached image manifest
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Retrieving image manifest python:3.9-slim
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Returning cached image manifest
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Built cross stage deps: map[0:[/etc/passwd /etc/group /usr/local/lib/python3.9/site-packages/ /usr/local/bin/ /app]]
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Retrieving image manifest python:3.9-slim
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Returning cached image manifest
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Retrieving image manifest python:3.9-slim
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Returning cached image manifest
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Executing 0 build triggers
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Building stage 'python:3.9-slim' [idx: '0', base-idx: '-1']
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Applying label maintainer=DevOps Team
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Applying label version=36
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Applying label build-date=2025-07-23T12:56:55Z
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Applying label vcs-ref=367aaea
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Applying label description=Flask CI/CD Demo Application
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Applying label org.opencontainers.image.title=Flask CI/CD Demo
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Applying label org.opencontainers.image.version=36
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Applying label org.opencontainers.image.description=Simple Flask application for Jenkins CI/CD pipeline demonstration
+[2025-07-23T12:57:31.789Z] [36mINFO[0m[0004] Checking for cached layer index.docker.io/elfkid/flask-cicd-demo/cache:b0193d5c6374685ed975f5b52b22f8443ca053588457a6caf82b1f9b7b7f2cf3...
+[2025-07-23T12:57:34.352Z] [36mINFO[0m[0006] No cached layer found for cmd RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+[2025-07-23T12:57:34.352Z] [36mINFO[0m[0006] Unpacking rootfs as cmd RUN groupadd -r appgroup && useradd -r -g appgroup appuser requires it.
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] ARG APP_VERSION=1.0.0
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] ARG BUILD_DATE
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] ARG VCS_REF
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PIP_NO_CACHE_DIR=1     PIP_DISABLE_PIP_VERSION_CHECK=1
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] LABEL maintainer="DevOps Team"       version="${APP_VERSION}"       build-date="${BUILD_DATE}"       vcs-ref="${VCS_REF}"       description="Flask CI/CD Demo Application"       org.opencontainers.image.title="Flask CI/CD Demo"       org.opencontainers.image.version="${APP_VERSION}"       org.opencontainers.image.description="Simple Flask application for Jenkins CI/CD pipeline demonstration"
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Applying label maintainer=DevOps Team
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Applying label version=36
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Applying label build-date=2025-07-23T12:56:55Z
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Applying label vcs-ref=367aaea
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Applying label description=Flask CI/CD Demo Application
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Applying label org.opencontainers.image.title=Flask CI/CD Demo
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Applying label org.opencontainers.image.version=36
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Applying label org.opencontainers.image.description=Simple Flask application for Jenkins CI/CD pipeline demonstration
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Initializing snapshotter ...
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Taking snapshot of full filesystem...
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Cmd: /bin/sh
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Args: [-c groupadd -r appgroup && useradd -r -g appgroup appuser]
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Running: [/bin/sh -c groupadd -r appgroup && useradd -r -g appgroup appuser]
+[2025-07-23T12:57:37.622Z] [36mINFO[0m[0010] Taking snapshot of full filesystem...
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] WORKDIR /app
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Cmd: workdir
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Changed working directory to /app
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Creating directory /app with uid -1 and gid -1
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Pushing layer index.docker.io/elfkid/flask-cicd-demo/cache:b0193d5c6374685ed975f5b52b22f8443ca053588457a6caf82b1f9b7b7f2cf3 to cache now
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Pushing image to index.docker.io/elfkid/flask-cicd-demo/cache:b0193d5c6374685ed975f5b52b22f8443ca053588457a6caf82b1f9b7b7f2cf3
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Taking snapshot of files...
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] COPY requirements.txt .
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Taking snapshot of files...
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] RUN pip install --no-cache-dir -r requirements.txt
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Cmd: /bin/sh
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Args: [-c pip install --no-cache-dir -r requirements.txt]
+[2025-07-23T12:57:37.879Z] [36mINFO[0m[0010] Running: [/bin/sh -c pip install --no-cache-dir -r requirements.txt]
+[2025-07-23T12:57:38.800Z] Collecting Flask==2.3.3
+[2025-07-23T12:57:38.800Z]   Downloading flask-2.3.3-py3-none-any.whl (96 kB)
+[2025-07-23T12:57:38.800Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 96.1/96.1 kB 9.2 MB/s eta 0:00:00
+[2025-07-23T12:57:38.800Z] Collecting Werkzeug==2.3.7
+[2025-07-23T12:57:38.800Z]   Downloading werkzeug-2.3.7-py3-none-any.whl (242 kB)
+[2025-07-23T12:57:38.800Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 242.2/242.2 kB 1.6 MB/s eta 0:00:00
+[2025-07-23T12:57:38.800Z] Collecting pytest==7.4.2
+[2025-07-23T12:57:38.800Z]   Downloading pytest-7.4.2-py3-none-any.whl (324 kB)
+[2025-07-23T12:57:39.057Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 324.5/324.5 kB 1.7 MB/s eta 0:00:00
+[2025-07-23T12:57:39.057Z] Collecting pytest-flask==1.2.0
+[2025-07-23T12:57:39.057Z]   Downloading pytest_flask-1.2.0-py3-none-any.whl (10 kB)
+[2025-07-23T12:57:39.313Z] Collecting pytest-cov==4.1.0
+[2025-07-23T12:57:39.314Z]   Downloading pytest_cov-4.1.0-py3-none-any.whl (21 kB)
+[2025-07-23T12:57:39.314Z] Collecting requests==2.31.0
+[2025-07-23T12:57:39.314Z]   Downloading requests-2.31.0-py3-none-any.whl (62 kB)
+[2025-07-23T12:57:39.314Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.6/62.6 kB 1.7 MB/s eta 0:00:00
+[2025-07-23T12:57:39.314Z] Collecting click>=8.1.3
+[2025-07-23T12:57:39.314Z]   Downloading click-8.1.8-py3-none-any.whl (98 kB)
+[2025-07-23T12:57:39.314Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.2/98.2 kB 1.7 MB/s eta 0:00:00
+[2025-07-23T12:57:39.567Z] Collecting Jinja2>=3.1.2
+[2025-07-23T12:57:39.567Z]   Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+[2025-07-23T12:57:39.567Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 326.2 MB/s eta 0:00:00
+[2025-07-23T12:57:39.567Z] Collecting blinker>=1.6.2
+[2025-07-23T12:57:39.567Z]   Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+[2025-07-23T12:57:39.567Z] Collecting itsdangerous>=2.1.2
+[2025-07-23T12:57:39.567Z]   Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+[2025-07-23T12:57:39.568Z] Collecting importlib-metadata>=3.6.0
+[2025-07-23T12:57:39.568Z]   Downloading importlib_metadata-8.7.0-py3-none-any.whl (27 kB)
+[2025-07-23T12:57:39.568Z] Collecting MarkupSafe>=2.1.1
+[2025-07-23T12:57:39.568Z]   Downloading MarkupSafe-3.0.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (21 kB)
+[2025-07-23T12:57:39.568Z] Collecting tomli>=1.0.0
+[2025-07-23T12:57:39.568Z]   Downloading tomli-2.2.1-py3-none-any.whl (14 kB)
+[2025-07-23T12:57:39.823Z] Collecting exceptiongroup>=1.0.0rc8
+[2025-07-23T12:57:39.823Z]   Downloading exceptiongroup-1.3.0-py3-none-any.whl (16 kB)
+[2025-07-23T12:57:39.823Z] Collecting packaging
+[2025-07-23T12:57:39.823Z]   Downloading packaging-25.0-py3-none-any.whl (66 kB)
+[2025-07-23T12:57:39.823Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.5/66.5 kB 506.8 MB/s eta 0:00:00
+[2025-07-23T12:57:39.823Z] Collecting pluggy<2.0,>=0.12
+[2025-07-23T12:57:39.823Z]   Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+[2025-07-23T12:57:39.823Z] Collecting iniconfig
+[2025-07-23T12:57:39.823Z]   Downloading iniconfig-2.1.0-py3-none-any.whl (6.0 kB)
+[2025-07-23T12:57:40.162Z] Collecting coverage[toml]>=5.2.1
+[2025-07-23T12:57:40.162Z]   Downloading coverage-7.9.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (241 kB)
+[2025-07-23T12:57:40.162Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 241.2/241.2 kB 57.9 MB/s eta 0:00:00
+[2025-07-23T12:57:40.162Z] Collecting charset-normalizer<4,>=2
+[2025-07-23T12:57:40.162Z]   Downloading charset_normalizer-3.4.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (144 kB)
+[2025-07-23T12:57:40.162Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 144.7/144.7 kB 400.1 MB/s eta 0:00:00
+[2025-07-23T12:57:40.419Z] Collecting urllib3<3,>=1.21.1
+[2025-07-23T12:57:40.419Z]   Downloading urllib3-2.5.0-py3-none-any.whl (129 kB)
+[2025-07-23T12:57:40.419Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 129.8/129.8 kB 64.7 MB/s eta 0:00:00
+[2025-07-23T12:57:40.419Z] Collecting idna<4,>=2.5
+[2025-07-23T12:57:40.419Z]   Downloading idna-3.10-py3-none-any.whl (70 kB)
+[2025-07-23T12:57:40.419Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 70.4/70.4 kB 58.4 MB/s eta 0:00:00
+[2025-07-23T12:57:40.419Z] Collecting certifi>=2017.4.17
+[2025-07-23T12:57:40.419Z]   Downloading certifi-2025.7.14-py3-none-any.whl (162 kB)
+[2025-07-23T12:57:40.419Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.7/162.7 kB 110.6 MB/s eta 0:00:00
+[2025-07-23T12:57:40.419Z] Collecting typing-extensions>=4.6.0
+[2025-07-23T12:57:40.419Z]   Downloading typing_extensions-4.14.1-py3-none-any.whl (43 kB)
+[2025-07-23T12:57:40.419Z]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.9/43.9 kB 470.8 MB/s eta 0:00:00
+[2025-07-23T12:57:40.419Z] Collecting zipp>=3.20
+[2025-07-23T12:57:40.419Z]   Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+[2025-07-23T12:57:40.672Z] Installing collected packages: zipp, urllib3, typing-extensions, tomli, pluggy, packaging, MarkupSafe, itsdangerous, iniconfig, idna, coverage, click, charset-normalizer, certifi, blinker, Werkzeug, requests, Jinja2, importlib-metadata, exceptiongroup, pytest, Flask, pytest-flask, pytest-cov
+[2025-07-23T12:57:41.228Z] Successfully installed Flask-2.3.3 Jinja2-3.1.6 MarkupSafe-3.0.2 Werkzeug-2.3.7 blinker-1.9.0 certifi-2025.7.14 charset-normalizer-3.4.2 click-8.1.8 coverage-7.9.2 exceptiongroup-1.3.0 idna-3.10 importlib-metadata-8.7.0 iniconfig-2.1.0 itsdangerous-2.2.0 packaging-25.0 pluggy-1.6.0 pytest-7.4.2 pytest-cov-4.1.0 pytest-flask-1.2.0 requests-2.31.0 tomli-2.2.1 typing-extensions-4.14.1 urllib3-2.5.0 zipp-3.23.0
+[2025-07-23T12:57:41.228Z] WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+[2025-07-23T12:57:41.228Z] [36mINFO[0m[0014] Taking snapshot of full filesystem...
+[2025-07-23T12:57:41.481Z] [36mINFO[0m[0014] Pushing layer index.docker.io/elfkid/flask-cicd-demo/cache:43ccf1ef16424b446e2f6c597b310ba5021b29c24d95e3cb8b03c439638de5a0 to cache now
+[2025-07-23T12:57:41.481Z] [36mINFO[0m[0014] Pushing image to index.docker.io/elfkid/flask-cicd-demo/cache:43ccf1ef16424b446e2f6c597b310ba5021b29c24d95e3cb8b03c439638de5a0
+[2025-07-23T12:57:41.481Z] [36mINFO[0m[0014] COPY app.py .
+[2025-07-23T12:57:41.481Z] [36mINFO[0m[0014] Taking snapshot of files...
+[2025-07-23T12:57:41.481Z] [36mINFO[0m[0014] RUN mkdir -p /app/logs &&     chown -R appuser:appgroup /app
+[2025-07-23T12:57:41.481Z] [36mINFO[0m[0014] Cmd: /bin/sh
+[2025-07-23T12:57:41.481Z] [36mINFO[0m[0014] Args: [-c mkdir -p /app/logs &&     chown -R appuser:appgroup /app]
+[2025-07-23T12:57:41.481Z] [36mINFO[0m[0014] Running: [/bin/sh -c mkdir -p /app/logs &&     chown -R appuser:appgroup /app]
+[2025-07-23T12:57:41.481Z] [36mINFO[0m[0014] Taking snapshot of full filesystem...
+[2025-07-23T12:57:41.739Z] [36mINFO[0m[0014] Pushing layer index.docker.io/elfkid/flask-cicd-demo/cache:deae965779dcbe15d077b784aed57f06c5090a95af3e944531f7abf167b97d04 to cache now
+[2025-07-23T12:57:41.740Z] [36mINFO[0m[0014] Pushing image to index.docker.io/elfkid/flask-cicd-demo/cache:deae965779dcbe15d077b784aed57f06c5090a95af3e944531f7abf167b97d04
+[2025-07-23T12:57:43.716Z] [33mWARN[0m[0016] Error uploading layer to cache: failed to push to destination index.docker.io/elfkid/flask-cicd-demo/cache:b0193d5c6374685ed975f5b52b22f8443ca053588457a6caf82b1f9b7b7f2cf3: HEAD https://index.docker.io/v2/elfkid/flask-cicd-demo/cache/manifests/b0193d5c6374685ed975f5b52b22f8443ca053588457a6caf82b1f9b7b7f2cf3: unexpected status code 401 Unauthorized (HEAD responses have no body, use GET for details)
+[2025-07-23T12:57:43.716Z] [36mINFO[0m[0016] Saving file etc/passwd for later use
+[2025-07-23T12:57:43.716Z] [36mINFO[0m[0016] Saving file etc/group for later use
+[2025-07-23T12:57:43.716Z] [36mINFO[0m[0016] Saving file usr/local/lib/python3.9/site-packages for later use
+[2025-07-23T12:57:43.716Z] [36mINFO[0m[0016] Saving file usr/local/bin for later use
+[2025-07-23T12:57:43.716Z] [36mINFO[0m[0016] Saving file app for later use
+[2025-07-23T12:57:43.716Z] [36mINFO[0m[0016] Deleting filesystem...
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0016] Retrieving image manifest python:3.9-slim
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0016] Returning cached image manifest
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0016] Retrieving image manifest python:3.9-slim
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0016] Returning cached image manifest
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0016] Executing 0 build triggers
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0016] Building stage 'python:3.9-slim' [idx: '1', base-idx: '-1']
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0017] Cmd: USER
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0017] Cmd: EXPOSE
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0017] Adding exposed port: 5000/tcp
+[2025-07-23T12:57:44.005Z] [36mINFO[0m[0017] Unpacking rootfs as cmd COPY --from=builder /etc/passwd /etc/passwd requires it.
+[2025-07-23T12:57:47.281Z] [36mINFO[0m[0020] ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     FLASK_APP=app.py     FLASK_ENV=production     APP_VERSION=${APP_VERSION:-1.0.0}     ENVIRONMENT=production     PORT=5000
+[2025-07-23T12:57:47.281Z] [36mINFO[0m[0020] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:47.281Z] [36mINFO[0m[0020] COPY --from=builder /etc/passwd /etc/passwd
+[2025-07-23T12:57:47.281Z] [36mINFO[0m[0020] Taking snapshot of files...
+[2025-07-23T12:57:47.283Z] [36mINFO[0m[0020] COPY --from=builder /etc/group /etc/group
+[2025-07-23T12:57:47.283Z] [36mINFO[0m[0020] Taking snapshot of files...
+[2025-07-23T12:57:47.283Z] [36mINFO[0m[0020] WORKDIR /app
+[2025-07-23T12:57:47.283Z] [36mINFO[0m[0020] Cmd: workdir
+[2025-07-23T12:57:47.283Z] [36mINFO[0m[0020] Changed working directory to /app
+[2025-07-23T12:57:47.283Z] [36mINFO[0m[0020] Creating directory /app with uid -1 and gid -1
+[2025-07-23T12:57:47.283Z] [36mINFO[0m[0020] Taking snapshot of files...
+[2025-07-23T12:57:47.539Z] [36mINFO[0m[0020] COPY --from=builder /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
+[2025-07-23T12:57:47.539Z] [36mINFO[0m[0020] Taking snapshot of files...
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] COPY --from=builder /usr/local/bin/ /usr/local/bin/
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] Taking snapshot of files...
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] COPY --from=builder --chown=appuser:appgroup /app .
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] Taking snapshot of files...
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] USER appuser
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] Cmd: USER
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] EXPOSE 5000
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] Cmd: EXPOSE
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] Adding exposed port: 5000/tcp
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3     CMD python -c "import requests; requests.get('http://localhost:5000/health')" || exit 1
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] CMD ["python", "app.py"]
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] No files changed in this command, skipping snapshotting.
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] Deleting filesystem...
+[2025-07-23T12:57:47.794Z] [36mINFO[0m[0020] Pushing image to elfkid/flask-cicd-demo:36
+[2025-07-23T12:57:55.957Z] [36mINFO[0m[0027] Pushed index.docker.io/elfkid/flask-cicd-demo@sha256:0aeb37cfb97c4b4bf472c19d69d90198fe84cf1e243dcf6637110e3a28b321cc
+[2025-07-23T12:57:55.958Z] [36mINFO[0m[0027] Pushing image to elfkid/flask-cicd-demo:latest
+[2025-07-23T12:58:01.272Z] [36mINFO[0m[0033] Pushed index.docker.io/elfkid/flask-cicd-demo@sha256:0aeb37cfb97c4b4bf472c19d69d90198fe84cf1e243dcf6637110e3a28b321cc
+[2025-07-23T12:58:01.272Z] + echo 'Image: elfkid/flask-cicd-demo:36'
+[2025-07-23T12:58:01.272Z] Image: elfkid/flask-cicd-demo:36
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Helm Chart Lint)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
+[2025-07-23T12:58:02.005Z] + helm lint helm/flask-chart
+[2025-07-23T12:58:02.005Z] ==> Linting helm/flask-chart
+[2025-07-23T12:58:02.005Z] [INFO] Chart.yaml: icon is recommended
+[2025-07-23T12:58:02.005Z]
+[2025-07-23T12:58:02.005Z] 1 chart(s) linted, 0 chart(s) failed
+[2025-07-23T12:58:02.005Z] + helm template flask-chart helm/flask-chart --set 'image.repository=elfkid/flask-cicd-demo' --set 'image.tag=36' --set 'appVersion=36' --dry-run --debug
+[2025-07-23T12:58:02.005Z] install.go:200: [debug] Original chart version: ""
+[2025-07-23T12:58:02.005Z] install.go:217: [debug] CHART PATH: /home/jenkins/agent/workspace/flask-cicd-demo/helm/flask-chart
+[2025-07-23T12:58:02.005Z]
+[2025-07-23T12:58:02.005Z] ---
+[2025-07-23T12:58:02.005Z] # Source: flask-chart/templates/serviceaccount.yaml
+[2025-07-23T12:58:02.005Z] apiVersion: v1
+[2025-07-23T12:58:02.005Z] kind: ServiceAccount
+[2025-07-23T12:58:02.005Z] metadata:
+[2025-07-23T12:58:02.005Z]   name: flask-chart
+[2025-07-23T12:58:02.005Z]   labels:
+[2025-07-23T12:58:02.005Z]     helm.sh/chart: flask-chart-0.1.0
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/name: flask-chart
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/instance: flask-chart
+[2025-07-23T12:58:02.005Z]     app: flask-cicd-demo
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/version: "1.0.0"
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/managed-by: Helm
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/part-of: flask-cicd-demo
+[2025-07-23T12:58:02.005Z] ---
+[2025-07-23T12:58:02.005Z] # Source: flask-chart/templates/configmap.yaml
+[2025-07-23T12:58:02.005Z] apiVersion: v1
+[2025-07-23T12:58:02.005Z] kind: ConfigMap
+[2025-07-23T12:58:02.005Z] metadata:
+[2025-07-23T12:58:02.005Z]   name: flask-chart-config
+[2025-07-23T12:58:02.005Z]   labels:
+[2025-07-23T12:58:02.005Z]     helm.sh/chart: flask-chart-0.1.0
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/name: flask-chart
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/instance: flask-chart
+[2025-07-23T12:58:02.005Z]     app: flask-cicd-demo
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/version: "1.0.0"
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/managed-by: Helm
+[2025-07-23T12:58:02.005Z]     app.kubernetes.io/part-of: flask-cicd-demo
+[2025-07-23T12:58:02.005Z] data:
+[2025-07-23T12:58:02.005Z]     APP_NAME: "flask-cicd-demo"
+[2025-07-23T12:58:02.005Z]     ENVIRONMENT: "production"
+[2025-07-23T12:58:02.005Z]     LOG_LEVEL: "INFO"
+[2025-07-23T12:58:02.005Z] ---
+[2025-07-23T12:58:02.005Z] # Source: flask-chart/templates/service.yaml
+[2025-07-23T12:58:02.005Z] apiVersion: v1
+[2025-07-23T12:58:02.009Z] kind: Service
+[2025-07-23T12:58:02.009Z] metadata:
+[2025-07-23T12:58:02.009Z]   name: flask-chart
+[2025-07-23T12:58:02.009Z]   labels:
+[2025-07-23T12:58:02.009Z]     helm.sh/chart: flask-chart-0.1.0
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/name: flask-chart
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/instance: flask-chart
+[2025-07-23T12:58:02.009Z]     app: flask-cicd-demo
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/version: "1.0.0"
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/managed-by: Helm
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/part-of: flask-cicd-demo
+[2025-07-23T12:58:02.009Z] spec:
+[2025-07-23T12:58:02.009Z]   type: ClusterIP
+[2025-07-23T12:58:02.009Z]   ports:
+[2025-07-23T12:58:02.009Z]     - port: 80
+[2025-07-23T12:58:02.009Z]       targetPort: 5000
+[2025-07-23T12:58:02.009Z]       protocol: TCP
+[2025-07-23T12:58:02.009Z]       name: http
+[2025-07-23T12:58:02.009Z]   selector:
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/name: flask-chart
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/instance: flask-chart
+[2025-07-23T12:58:02.009Z]     app: flask-cicd-demo
+[2025-07-23T12:58:02.009Z] ---
+[2025-07-23T12:58:02.009Z] # Source: flask-chart/templates/deployment.yaml
+[2025-07-23T12:58:02.009Z] apiVersion: apps/v1
+[2025-07-23T12:58:02.009Z] kind: Deployment
+[2025-07-23T12:58:02.009Z] metadata:
+[2025-07-23T12:58:02.009Z]   name: flask-chart
+[2025-07-23T12:58:02.009Z]   labels:
+[2025-07-23T12:58:02.009Z]     helm.sh/chart: flask-chart-0.1.0
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/name: flask-chart
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/instance: flask-chart
+[2025-07-23T12:58:02.009Z]     app: flask-cicd-demo
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/version: "1.0.0"
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/managed-by: Helm
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/part-of: flask-cicd-demo
+[2025-07-23T12:58:02.009Z] spec:
+[2025-07-23T12:58:02.009Z]   replicas: 2
+[2025-07-23T12:58:02.009Z]   strategy:
+[2025-07-23T12:58:02.009Z]     type: RollingUpdate
+[2025-07-23T12:58:02.009Z]     rollingUpdate:
+[2025-07-23T12:58:02.009Z]       maxUnavailable: 0
+[2025-07-23T12:58:02.009Z]       maxSurge: 1
+[2025-07-23T12:58:02.009Z]   selector:
+[2025-07-23T12:58:02.009Z]     matchLabels:
+[2025-07-23T12:58:02.009Z]       app.kubernetes.io/name: flask-chart
+[2025-07-23T12:58:02.009Z]       app.kubernetes.io/instance: flask-chart
+[2025-07-23T12:58:02.009Z]       app: flask-cicd-demo
+[2025-07-23T12:58:02.009Z]   template:
+[2025-07-23T12:58:02.009Z]     metadata:
+[2025-07-23T12:58:02.009Z]       annotations:
+[2025-07-23T12:58:02.009Z]         checksum/config: a75c11d2515a75c44592d9fac1a3894a9c6757e89388983f6e042f72e53a6f94
+[2025-07-23T12:58:02.009Z]       labels:
+[2025-07-23T12:58:02.009Z]         app.kubernetes.io/name: flask-chart
+[2025-07-23T12:58:02.009Z]         app.kubernetes.io/instance: flask-chart
+[2025-07-23T12:58:02.009Z]         app: flask-cicd-demo
+[2025-07-23T12:58:02.009Z]     spec:
+[2025-07-23T12:58:02.009Z]       serviceAccountName: flask-chart
+[2025-07-23T12:58:02.009Z]       securityContext:
+[2025-07-23T12:58:02.009Z]         fsGroup: 2000
+[2025-07-23T12:58:02.009Z]       containers:
+[2025-07-23T12:58:02.009Z]         - name: flask-chart
+[2025-07-23T12:58:02.009Z]           securityContext:
+[2025-07-23T12:58:02.009Z]             capabilities:
+[2025-07-23T12:58:02.009Z]               drop:
+[2025-07-23T12:58:02.009Z]               - ALL
+[2025-07-23T12:58:02.009Z]             readOnlyRootFilesystem: false
+[2025-07-23T12:58:02.009Z]             runAsNonRoot: true
+[2025-07-23T12:58:02.009Z]             runAsUser: 1000
+[2025-07-23T12:58:02.009Z]           image: "elfkid/flask-cicd-demo:36"
+[2025-07-23T12:58:02.009Z]           imagePullPolicy: IfNotPresent
+[2025-07-23T12:58:02.009Z]           ports:
+[2025-07-23T12:58:02.009Z]             - name: http
+[2025-07-23T12:58:02.009Z]               containerPort: 5000
+[2025-07-23T12:58:02.009Z]               protocol: TCP
+[2025-07-23T12:58:02.009Z]           env:
+[2025-07-23T12:58:02.009Z]             - name: APP_NAME
+[2025-07-23T12:58:02.009Z]               value: "flask-cicd-demo"
+[2025-07-23T12:58:02.009Z]             - name: APP_VERSION
+[2025-07-23T12:58:02.009Z]               value: "1.0.0"
+[2025-07-23T12:58:02.009Z]             - name: ENVIRONMENT
+[2025-07-23T12:58:02.009Z]               value: "production"
+[2025-07-23T12:58:02.009Z]             - name: PORT
+[2025-07-23T12:58:02.009Z]               value: "5000"
+[2025-07-23T12:58:02.009Z]             - name: FLASK_DEBUG
+[2025-07-23T12:58:02.009Z]               value: "false"
+[2025-07-23T12:58:02.009Z]             - name: HOSTNAME
+[2025-07-23T12:58:02.009Z]               valueFrom:
+[2025-07-23T12:58:02.009Z]                 fieldRef:
+[2025-07-23T12:58:02.009Z]                   fieldPath: metadata.name
+[2025-07-23T12:58:02.009Z]             - name: LOG_LEVEL
+[2025-07-23T12:58:02.009Z]               valueFrom:
+[2025-07-23T12:58:02.009Z]                 configMapKeyRef:
+[2025-07-23T12:58:02.009Z]                   name: flask-chart-config
+[2025-07-23T12:58:02.009Z]                   key: LOG_LEVEL
+[2025-07-23T12:58:02.009Z]           livenessProbe:
+[2025-07-23T12:58:02.009Z]             httpGet:
+[2025-07-23T12:58:02.009Z]               path: /health
+[2025-07-23T12:58:02.009Z]               port: http
+[2025-07-23T12:58:02.009Z]             initialDelaySeconds: 30
+[2025-07-23T12:58:02.009Z]             periodSeconds: 30
+[2025-07-23T12:58:02.009Z]             timeoutSeconds: 10
+[2025-07-23T12:58:02.009Z]             failureThreshold: 3
+[2025-07-23T12:58:02.009Z]           readinessProbe:
+[2025-07-23T12:58:02.009Z]             httpGet:
+[2025-07-23T12:58:02.009Z]               path: /health
+[2025-07-23T12:58:02.009Z]               port: http
+[2025-07-23T12:58:02.009Z]             initialDelaySeconds: 5
+[2025-07-23T12:58:02.009Z]             periodSeconds: 10
+[2025-07-23T12:58:02.009Z]             timeoutSeconds: 3
+[2025-07-23T12:58:02.009Z]             failureThreshold: 3
+[2025-07-23T12:58:02.009Z]             successThreshold: 1
+[2025-07-23T12:58:02.009Z]           resources:
+[2025-07-23T12:58:02.009Z]             limits:
+[2025-07-23T12:58:02.009Z]               cpu: 500m
+[2025-07-23T12:58:02.009Z]               memory: 512Mi
+[2025-07-23T12:58:02.009Z]             requests:
+[2025-07-23T12:58:02.009Z]               cpu: 250m
+[2025-07-23T12:58:02.009Z]               memory: 256Mi
+[2025-07-23T12:58:02.009Z] ---
+[2025-07-23T12:58:02.009Z] # Source: flask-chart/templates/tests/test-connection.yaml
+[2025-07-23T12:58:02.009Z] apiVersion: v1
+[2025-07-23T12:58:02.009Z] kind: Pod
+[2025-07-23T12:58:02.009Z] metadata:
+[2025-07-23T12:58:02.009Z]   name: "flask-chart-test-connection"
+[2025-07-23T12:58:02.009Z]   labels:
+[2025-07-23T12:58:02.009Z]     helm.sh/chart: flask-chart-0.1.0
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/name: flask-chart
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/instance: flask-chart
+[2025-07-23T12:58:02.009Z]     app: flask-cicd-demo
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/version: "1.0.0"
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/managed-by: Helm
+[2025-07-23T12:58:02.009Z]     app.kubernetes.io/part-of: flask-cicd-demo
+[2025-07-23T12:58:02.009Z]   annotations:
+[2025-07-23T12:58:02.009Z]     "helm.sh/hook": test
+[2025-07-23T12:58:02.009Z] spec:
+[2025-07-23T12:58:02.009Z]   containers:
+[2025-07-23T12:58:02.009Z]     - name: wget
+[2025-07-23T12:58:02.009Z]       image: busybox
+[2025-07-23T12:58:02.009Z]       command: ['wget']
+[2025-07-23T12:58:02.009Z]       args: ['flask-chart:80']
+[2025-07-23T12:58:02.009Z]   restartPolicy: Never
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy to Kubernetes)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
+[2025-07-23T12:58:02.626Z] + helm dependency update helm/flask-chart
+[2025-07-23T12:58:02.626Z] + helm upgrade --install flask-chart helm/flask-chart --namespace default --create-namespace --set 'image.repository=elfkid/flask-cicd-demo' --set 'image.tag=36' --set 'appVersion=36' --set 'fullnameOverride=flask-cicd-demo' --wait '--timeout=5m'
+[2025-07-23T12:58:41.435Z] Release "flask-chart" has been upgraded. Happy Helming!
+[2025-07-23T12:58:41.435Z] NAME: flask-chart
+[2025-07-23T12:58:41.435Z] LAST DEPLOYED: Wed Jul 23 12:58:02 2025
+[2025-07-23T12:58:41.435Z] NAMESPACE: default
+[2025-07-23T12:58:41.435Z] STATUS: deployed
+[2025-07-23T12:58:41.435Z] REVISION: 10
+[2025-07-23T12:58:41.435Z] NOTES:
+[2025-07-23T12:58:41.435Z] 1. Get the application URL by running these commands:
+[2025-07-23T12:58:41.435Z]   export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=flask-chart,app.kubernetes.io/instance=flask-chart" -o jsonpath="{.items[0].metadata.name}")
+[2025-07-23T12:58:41.435Z]   export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+[2025-07-23T12:58:41.435Z]   echo "Visit http://127.0.0.1:8080 to use your application"
+[2025-07-23T12:58:41.435Z]   kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+[2025-07-23T12:58:41.435Z] + helm status flask-chart -n default
+[2025-07-23T12:58:41.435Z] NAME: flask-chart
+[2025-07-23T12:58:41.435Z] LAST DEPLOYED: Wed Jul 23 12:58:02 2025
+[2025-07-23T12:58:41.435Z] NAMESPACE: default
+[2025-07-23T12:58:41.435Z] STATUS: deployed
+[2025-07-23T12:58:41.435Z] REVISION: 10
+[2025-07-23T12:58:41.435Z] NOTES:
+[2025-07-23T12:58:41.435Z] 1. Get the application URL by running these commands:
+[2025-07-23T12:58:41.435Z]   export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=flask-chart,app.kubernetes.io/instance=flask-chart" -o jsonpath="{.items[0].metadata.name}")
+[2025-07-23T12:58:41.435Z]   export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+[2025-07-23T12:58:41.435Z]   echo "Visit http://127.0.0.1:8080 to use your application"
+[2025-07-23T12:58:41.435Z]   kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Smoke Test)
+[Pipeline] readTrusted
+[2025-07-23T12:58:42.217Z] Obtained curl-pod.yaml from git https://github.com/igorkang-smc/rsschool-devops-course-tasks
+[Pipeline] podTemplate
+[Pipeline] {
+[Pipeline] node
+[2025-07-23T12:58:43.340Z] Created Pod: kubernetes jenkins/flask-cicd-demo-36-svmrm-gcv5k-6w8wx
+[2025-07-23T12:58:43.377Z] [PodInfo] jenkins/flask-cicd-demo-36-svmrm-gcv5k-6w8wx
+[2025-07-23T12:58:43.377Z] 	Container [curl] waiting [ContainerCreating] No message
+[2025-07-23T12:58:43.377Z] 	Container [jnlp] waiting [ContainerCreating] No message
+[2025-07-23T12:58:43.377Z] 	Pod [Pending][ContainersNotReady] containers with unready status: [curl jnlp]
+[2025-07-23T12:58:45.542Z] Agent flask-cicd-demo-36-svmrm-gcv5k-6w8wx is provisioned from template flask-cicd-demo_36-svmrm-gcv5k
+[2025-07-23T12:58:45.546Z] ---
+[2025-07-23T12:58:45.546Z] apiVersion: "v1"
+[2025-07-23T12:58:45.546Z] kind: "Pod"
+[2025-07-23T12:58:45.546Z] metadata:
+[2025-07-23T12:58:45.546Z]   annotations:
+[2025-07-23T12:58:45.546Z]     kubernetes.jenkins.io/last-refresh: "1753275523291"
+[2025-07-23T12:58:45.546Z]     buildUrl: "http://jenkins.jenkins.svc.cluster.local:8080/job/flask-cicd-demo/36/"
+[2025-07-23T12:58:45.546Z]     runUrl: "job/flask-cicd-demo/36/"
+[2025-07-23T12:58:45.546Z]   labels:
+[2025-07-23T12:58:45.546Z]     jenkins: "curl"
+[2025-07-23T12:58:45.546Z]     jenkins/jenkins-jenkins-agent: "true"
+[2025-07-23T12:58:45.546Z]     jenkins/label-digest: "54a48acee00793617e9db8400156f5e994f10cee"
+[2025-07-23T12:58:45.546Z]     jenkins/label: "flask-cicd-demo_36-svmrm"
+[2025-07-23T12:58:45.546Z]     kubernetes.jenkins.io/controller: "http___jenkins_jenkins_svc_cluster_local_8080x"
+[2025-07-23T12:58:45.546Z]   name: "flask-cicd-demo-36-svmrm-gcv5k-6w8wx"
+[2025-07-23T12:58:45.546Z]   namespace: "jenkins"
+[2025-07-23T12:58:45.546Z] spec:
+[2025-07-23T12:58:45.546Z]   containers:
+[2025-07-23T12:58:45.546Z]   - args:
+[2025-07-23T12:58:45.546Z]     - |
+[2025-07-23T12:58:45.546Z]       apk add --no-cache curl
+[2025-07-23T12:58:45.546Z]       tail -f /dev/null
+[2025-07-23T12:58:45.546Z]     command:
+[2025-07-23T12:58:45.546Z]     - "/bin/sh"
+[2025-07-23T12:58:45.546Z]     - "-ce"
+[2025-07-23T12:58:45.546Z]     image: "alpine:3.20"
+[2025-07-23T12:58:45.546Z]     name: "curl"
+[2025-07-23T12:58:45.546Z]     volumeMounts:
+[2025-07-23T12:58:45.546Z]     - mountPath: "/home/jenkins/agent"
+[2025-07-23T12:58:45.546Z]       name: "workspace-volume"
+[2025-07-23T12:58:45.546Z]       readOnly: false
+[2025-07-23T12:58:45.546Z]   - args:
+[2025-07-23T12:58:45.546Z]     - "$(JENKINS_SECRET)"
+[2025-07-23T12:58:45.546Z]     - "$(JENKINS_NAME)"
+[2025-07-23T12:58:45.546Z]     env:
+[2025-07-23T12:58:45.546Z]     - name: "JENKINS_SECRET"
+[2025-07-23T12:58:45.546Z]       value: "********"
+[2025-07-23T12:58:45.546Z]     - name: "JENKINS_TUNNEL"
+[2025-07-23T12:58:45.546Z]       value: "jenkins-agent.jenkins.svc.cluster.local:50000"
+[2025-07-23T12:58:45.546Z]     - name: "JENKINS_AGENT_NAME"
+[2025-07-23T12:58:45.546Z]       value: "flask-cicd-demo-36-svmrm-gcv5k-6w8wx"
+[2025-07-23T12:58:45.546Z]     - name: "REMOTING_OPTS"
+[2025-07-23T12:58:45.546Z]       value: "-noReconnectAfter 1d"
+[2025-07-23T12:58:45.546Z]     - name: "JENKINS_NAME"
+[2025-07-23T12:58:45.546Z]       value: "flask-cicd-demo-36-svmrm-gcv5k-6w8wx"
+[2025-07-23T12:58:45.546Z]     - name: "JENKINS_AGENT_WORKDIR"
+[2025-07-23T12:58:45.546Z]       value: "/home/jenkins/agent"
+[2025-07-23T12:58:45.546Z]     - name: "JENKINS_URL"
+[2025-07-23T12:58:45.546Z]       value: "http://jenkins.jenkins.svc.cluster.local:8080/"
+[2025-07-23T12:58:45.546Z]     image: "jenkins/inbound-agent:3309.v27b_9314fd1a_4-1"
+[2025-07-23T12:58:45.546Z]     name: "jnlp"
+[2025-07-23T12:58:45.546Z]     resources:
+[2025-07-23T12:58:45.546Z]       requests:
+[2025-07-23T12:58:45.546Z]         memory: "256Mi"
+[2025-07-23T12:58:45.546Z]         cpu: "100m"
+[2025-07-23T12:58:45.546Z]     volumeMounts:
+[2025-07-23T12:58:45.546Z]     - mountPath: "/home/jenkins/agent"
+[2025-07-23T12:58:45.546Z]       name: "workspace-volume"
+[2025-07-23T12:58:45.546Z]       readOnly: false
+[2025-07-23T12:58:45.546Z]   nodeSelector:
+[2025-07-23T12:58:45.546Z]     kubernetes.io/os: "linux"
+[2025-07-23T12:58:45.546Z]   restartPolicy: "Never"
+[2025-07-23T12:58:45.546Z]   serviceAccountName: "jenkins"
+[2025-07-23T12:58:45.546Z]   volumes:
+[2025-07-23T12:58:45.546Z]   - emptyDir:
+[2025-07-23T12:58:45.546Z]       medium: ""
+[2025-07-23T12:58:45.546Z]     name: "workspace-volume"
+[2025-07-23T12:58:45.546Z]
+[2025-07-23T12:58:45.571Z] Running on flask-cicd-demo-36-svmrm-gcv5k-6w8wx in /home/jenkins/agent/workspace/flask-cicd-demo
+[Pipeline] {
+[Pipeline] checkout
+[2025-07-23T12:58:45.632Z] Selected Git installation does not exist. Using Default
+[2025-07-23T12:58:45.632Z] The recommended git tool is: NONE
+[2025-07-23T12:58:46.485Z] No credentials specified
+[2025-07-23T12:58:46.488Z] Cloning the remote Git repository
+[2025-07-23T12:58:46.493Z] Cloning repository https://github.com/igorkang-smc/rsschool-devops-course-tasks
+[2025-07-23T12:58:46.512Z]  > git init /home/jenkins/agent/workspace/flask-cicd-demo # timeout=10
+[2025-07-23T12:58:46.557Z] Fetching upstream changes from https://github.com/igorkang-smc/rsschool-devops-course-tasks
+[2025-07-23T12:58:46.557Z]  > git --version # timeout=10
+[2025-07-23T12:58:46.560Z]  > git --version # 'git version 2.39.5'
+[2025-07-23T12:58:46.560Z]  > git fetch --tags --force --progress -- https://github.com/igorkang-smc/rsschool-devops-course-tasks +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2025-07-23T12:58:47.479Z]  > git config remote.origin.url https://github.com/igorkang-smc/rsschool-devops-course-tasks # timeout=10
+[2025-07-23T12:58:47.489Z]  > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2025-07-23T12:58:47.846Z] Avoid second fetch
+[2025-07-23T12:58:47.856Z] Checking out Revision 367aaead598d4dc177cab7d49be0b7e51027be11 (refs/remotes/origin/task_6)
+[2025-07-23T12:58:47.930Z] Commit message: "rsschool-devops-task_6"
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] container
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] echo
+[2025-07-23T12:58:48.006Z] Performing smoke test on: http://flask-cicd-demo.default.svc.cluster.local:80
+[Pipeline] sh
+[2025-07-23T12:58:48.539Z] + curl -v --fail --max-time 10 http://flask-cicd-demo.default.svc.cluster.local:80/
+[2025-07-23T12:58:48.539Z]   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[2025-07-23T12:58:48.539Z]                                  Dload  Upload   Total   Spent    Left  Speed
+[2025-07-23T12:58:48.539Z]
+[2025-07-23T12:58:48.539Z]   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Host flask-cicd-demo.default.svc.cluster.local:80 was resolved.
+[2025-07-23T12:58:48.539Z] * IPv6: (none)
+[2025-07-23T12:58:48.539Z] * IPv4: 10.101.95.172
+[2025-07-23T12:58:48.539Z] *   Trying 10.101.95.172:80...
+[2025-07-23T12:58:48.539Z] * Connected to flask-cicd-demo.default.svc.cluster.local (10.101.95.172) port 80
+[2025-07-23T12:58:48.539Z] * using HTTP/1.x
+[2025-07-23T12:58:48.539Z] > GET / HTTP/1.1
+[2025-07-23T12:58:48.539Z] > Host: flask-cicd-demo.default.svc.cluster.local
+[2025-07-23T12:58:48.539Z] > User-Agent: curl/8.12.1
+[2025-07-23T12:58:48.539Z] > Accept: */*
+[2025-07-23T12:58:48.539Z] >
+[2025-07-23T12:58:48.539Z] * Request completely sent off
+[2025-07-23T12:58:48.539Z] < HTTP/1.1 200 OK
+[2025-07-23T12:58:48.539Z] < Server: Werkzeug/2.3.7 Python/3.9.23
+[2025-07-23T12:58:48.539Z] < Date: Wed, 23 Jul 2025 12:58:48 GMT
+[2025-07-23T12:58:48.539Z] < Content-Type: text/html; charset=utf-8
+[2025-07-23T12:58:48.539Z] < Content-Length: 2191
+[2025-07-23T12:58:48.539Z] < Connection: close
+[2025-07-23T12:58:48.539Z] <
+[2025-07-23T12:58:48.539Z] { [2191 bytes data]
+[2025-07-23T12:58:48.539Z]
+[2025-07-23T12:58:48.539Z] <!DOCTYPE html>
+[2025-07-23T12:58:48.539Z] <html>
+[2025-07-23T12:58:48.539Z] <head>
+[2025-07-23T12:58:48.539Z]     <title>Flask CI/CD Demo</title>
+[2025-07-23T12:58:48.539Z]     <style>
+[2025-07-23T12:58:48.539Z]         body {
+[2025-07-23T12:58:48.539Z]             font-family: Arial, sans-serif;
+[2025-07-23T12:58:48.539Z]             max-width: 800px;
+[2025-07-23T12:58:48.539Z]             margin: 50px auto;
+[2025-07-23T12:58:48.539Z]             padding: 20px;
+[2025-07-23T12:58:48.539Z]             background-color: #f5f5f5;
+[2025-07-23T12:58:48.539Z]         }
+[2025-07-23T12:58:48.539Z]         .container {
+[2025-07-23T12:58:48.539Z]             background: white;
+[2025-07-23T12:58:48.539Z]             padding: 30px;
+[2025-07-23T12:58:48.539Z]             border-radius: 10px;
+[2025-07-23T12:58:48.539Z]             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+[2025-07-23T12:58:48.539Z]         }
+[2025-07-23T12:58:48.539Z]         .header {
+[2025-07-23T12:58:48.539Z]             color: #333;
+[2025-07-23T12:58:48.539Z]             text-align: center;
+[2025-07-23T12:58:48.539Z]             margin-bottom: 30px;
+[2025-07-23T12:58:48.539Z]         }
+[2025-07-23T12:58:48.539Z]         .status {
+[2025-07-23T12:58:48.539Z]             background: #4CAF50;
+[2025-07-23T12:58:48.539Z]             color: white;
+[2025-07-23T12:58:48.539Z]             padding: 10px;
+[2025-07-23T12:58:48.539Z]             border-radius: 5px;
+[2025-07-23T12:58:48.539Z]             text-align: center;
+[2025-07-23T12:58:48.539Z]             margin: 20px 0;
+[2025-07-23T12:58:48.539Z]         }
+[2025-07-23T12:58:48.539Z]         .info {
+[2025-07-23T12:58:48.539Z]             background: #2196F3;
+[2025-07-23T12:58:48.539Z]             color: white;
+[2025-07-23T12:58:48.539Z]             padding: 15px;
+[2025-07-23T12:58:48.539Z]             border-radius: 5px;
+[2025-07-23T12:58:48.539Z]             margin: 10px 0;
+[2025-07-23T12:58:48.539Z]         }
+[2025-07-23T12:58:48.539Z]         .endpoint {
+[2025-07-23T12:58:48.539Z]             background: #ff9800;
+[2025-07-23T12:58:48.539Z]             color: white;
+[2025-07-23T12:58:48.539Z]             padding: 10px;
+[2025-07-23T12:58:48.539Z]             border-radius: 5px;
+[2025-07-23T12:58:48.539Z]             margin: 10px 0;
+[2025-07-23T12:58:48.539Z]         }
+[2025-07-23T12:58:48.539Z]     </style>
+[2025-07-23T12:58:48.539Z] </head>
+[2025-07-23T12:58:48.539Z] <body>
+[2025-07-23T12:58:48.539Z]     <div class="container">
+[2025-07-23T12:58:48.539Z]         <div class="header">
+[2025-07-23T12:58:48.539Z]             <h1>🚀 Flask CI/CD Pipeline Demo</h1>
+[2025-07-23T12:58:48.539Z]         </div>
+[2025-07-23T12:58:48.539Z]
+[2025-07-23T12:58:48.539Z]         <div class="status">
+[2025-07-23T12:58:48.539Z]             ✅ Application is running successfully!
+[2025-07-23T12:58:48.539Z]         </div>
+[2025-07-23T12:58:48.539Z]
+[2025-07-23T12:58:48.539Z]         <div class="info">
+[2025-07-23T12:58:48.539Z]             <h3>Application Information:</h3>
+[2025-07-23T12:58:48.539Z]             <p><strong>Version:</strong> 1.0.0</p>
+[2025-07-23T12:58:48.539Z]             <p><strong>Environment:</strong> production</p>
+[2025-07-23T12:58:48.539Z]             <p><strong>Timestamp:</strong> 2025-07-23 12:58:48</p>
+[2025-07-23T12:58:48.540Z]             <p><strong>Host:</strong> flask-cicd-demo-65f6c445c-shpvm</p>
+[2025-07-23T12:58:48.540Z]         </div>
+[2025-07-23T12:58:48.540Z]
+[2025-07-23T12:58:48.540Z]         <div class="endpoint">
+[2025-07-23T12:58:48.540Z]             <h3>Available Endpoints:</h3>
+[2025-07-23T12:58:48.540Z]             <ul>
+[2025-07-23T12:58:48.540Z]                 <li><strong>GET /</strong> - This main page</li>
+[2025-07-23T12:58:48.540Z]                 <li><strong>GET /health</strong> - Health check endpoint</li>
+[2025-07-23T12:58:48.540Z]                 <li><strong>GET /api/status</strong> - API status endpoint</li>
+[2025-07-23T12:58:48.540Z]                 <li><strong>GET /api/info</strong> - Application information</li>
+[2025-07-23T12:58:48.540Z]             </ul>
+[2025-07-23T12:58:48.540Z]         </div>
+[2025-07-23T12:58:48.540Z]     </div>
+[2025-07-23T12:58:48.540Z] </body>
+[2025-07-23T12:58:48.540Z] </html>
+[2025-07-23T12:58:48.540Z] 100  2191  100  2191    0     0   147k      0 --:--:-- --:--:-- --:--:--  164k
+[2025-07-23T12:58:48.540Z] * shutting down connection #0
+[Pipeline] echo
+[2025-07-23T12:58:48.567Z]  Smoke Test Passed!
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // podTemplate
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] archiveArtifacts
+[2025-07-23T12:58:48.754Z] Archiving artifacts
+[Pipeline] cleanWs
+[2025-07-23T12:58:48.778Z] [WS-CLEANUP] Deleting project workspace...
+[2025-07-23T12:58:48.778Z] [WS-CLEANUP] Deferred wipeout is used...
+[2025-07-23T12:58:48.784Z] [WS-CLEANUP] done
+[Pipeline] script
+[Pipeline] {
+[Pipeline] slackSend
+[2025-07-23T12:58:48.806Z] Slack Send Pipeline step running, values are - baseUrl: <empty>, teamDomain: TechTest, channel: #ai, color: good, botUser: true, tokenCredentialId: slack-token, notifyCommitters: false, iconEmoji: <empty>, username: <empty>, timestamp: <empty>
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[2025-07-23T12:58:49.366Z]
+[Pipeline] // ansiColor
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // podTemplate
+[Pipeline] End of Pipeline
+Finished: SUCCESS
