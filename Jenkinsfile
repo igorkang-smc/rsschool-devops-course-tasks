@@ -225,7 +225,7 @@ pipeline {
                     script {
                         def serviceName = env.HELM_RELEASE_NAME
                         def namespace = env.K8S_NAMESPACE
-                        def servicePort = '5000'
+                        def servicePort = '80'
 
                         def appUrl = "http://${serviceName}.${namespace}.svc.cluster.local:${servicePort}"
 
