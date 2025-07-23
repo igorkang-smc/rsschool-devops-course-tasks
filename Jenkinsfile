@@ -220,35 +220,38 @@ pipeline {
                     namespace "${K8S_NAMESPACE}"
                 }
             }
-            steps {
-                container('curl') {
-                    script {
-                        def serviceName = env.HELM_RELEASE_NAME
-                        def namespace = env.K8S_NAMESPACE
-                        def servicePort = '80'
+            stage('Smoke Test') {
+                steps {
+                    container('kubectl') {
+                        script {
+                            def serviceName = env.HELM_RELEASE_NAME
+                            def namespace = env.K8S_NAMESPACE
+                            def servicePort = '80'  // Мы уже убедились, что сервис слушает на 80
+                            def appUrl = "http://${serviceName}.${namespace}.svc.cluster.local:${servicePort}/health"
 
-                        def appUrl = "http://${serviceName}.${namespace}.svc.cluster.local:${servicePort}"
+                            echo "Performing smoke test on: ${appUrl}"
 
-                        echo "Performing smoke test on: ${appUrl}"
+                            def maxAttempts = 10
+                            def attempt = 0
+                            def success = false
 
-                        def maxAttempts = 10
-                        def attempt = 0
-                        def success = false
+                            sh 'apk add --no-cache curl'  // Устанавливаем curl в alpine-based контейнер
 
-                        while (attempt < maxAttempts && !success) {
-                            try {
-                                sh "curl -v --fail --max-time 10 ${appUrl}/"
-                                success = true
-                            } catch (Exception e) {
-                                echo "Attempt ${++attempt}/${maxAttempts} failed: ${e.message}"
-                                sleep 5
+                            while (attempt < maxAttempts && !success) {
+                                try {
+                                    sh "curl -v --fail --max-time 10 ${appUrl}"
+                                    success = true
+                                } catch (Exception e) {
+                                    echo "Attempt ${++attempt}/${maxAttempts} failed: ${e.message}"
+                                    sleep 5
+                                }
                             }
-                        }
 
-                        if (!success) {
-                            error "Smoke test failed after ${maxAttempts} attempts."
-                        } else {
-                            echo "Smoke Test Passed!"
+                            if (!success) {
+                                error "Smoke test failed after ${maxAttempts} attempts."
+                            } else {
+                                echo "✅ Smoke Test Passed!"
+                            }
                         }
                     }
                 }
