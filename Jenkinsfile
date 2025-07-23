@@ -213,14 +213,22 @@ pipeline {
                 }
             }
         }
+
         stage('Smoke Test') {
+            agent {
+                kubernetes {
+                    yamlFile 'curl-pod.yaml'
+                    namespace 'jenkins'
+                }
+            }
             steps {
-                container('kubectl') {
+                container('curl') {
                     script {
-                        def serviceName = env.HELM_RELEASE_NAME
+                        def serviceName = 'flask-cicd-demo'
                         def namespace = env.K8S_NAMESPACE
                         def servicePort = '80'
-                        def appUrl = "http://${serviceName}.${namespace}.svc.cluster.local:${servicePort}/health"
+
+                        def appUrl = "http://${serviceName}.${namespace}.svc.cluster.local:${servicePort}"
 
                         echo "Performing smoke test on: ${appUrl}"
 
@@ -228,11 +236,9 @@ pipeline {
                         def attempt = 0
                         def success = false
 
-                        sh 'apk add --no-cache curl'
-
                         while (attempt < maxAttempts && !success) {
                             try {
-                                sh "curl -v --fail --max-time 10 ${appUrl}"
+                                sh "curl -v --fail --max-time 10 ${appUrl}/"
                                 success = true
                             } catch (Exception e) {
                                 echo "Attempt ${++attempt}/${maxAttempts} failed: ${e.message}"
@@ -243,12 +249,13 @@ pipeline {
                         if (!success) {
                             error "Smoke test failed after ${maxAttempts} attempts."
                         } else {
-                            echo "✅ Smoke Test Passed!"
+                            echo " Smoke Test Passed!"
                         }
                     }
                 }
             }
         }
+
     }
 
     post {
