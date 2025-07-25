@@ -72,6 +72,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -255,6 +256,72 @@ pipeline {
                 }
             }
         }
+        stage('Add Helm Repos') {
+            steps {
+                container('helm') {
+                    sh '''
+                    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+                    helm repo add grafana https://grafana.github.io/helm-charts
+                    helm repo update
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy Prometheus') {
+            steps {
+                container('helm') {
+                    dir('monitoring') {
+                        sh '''
+                        helm upgrade --install prometheus prometheus-community/prometheus \
+                        --namespace monitoring \
+                        --create-namespace \
+                        --values prometheus-values.yaml
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Deploy Mailhog') {
+            steps {
+                container('kubectl') {
+                    dir('monitoring') {
+                        sh 'kubectl apply -f mailhog.yaml -n monitoring'
+                    }
+                }
+            }
+        }
+
+        stage('Configure Grafana Alerts') {
+            steps {
+                container('kubectl') {
+                    dir('monitoring') {
+                        sh '''
+                        kubectl create configmap grafana-alerting \
+                            --from-file=contact-points.yaml \
+                            --from-file=alert-rules.yaml \
+                            -n monitoring --dry-run=client -o yaml | kubectl apply -f -
+                        '''
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy Grafana') {
+            steps {
+                container('helm') {
+                    dir('monitoring') {
+                        sh '''
+                        helm upgrade --install my-grafana grafana/grafana \
+                        --namespace monitoring \
+                        --values grafana-values.yaml
+                        '''
+                    }
+                }
+            }
+        }
+
 
     }
 

@@ -1,0 +1,7 @@
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: email-notify
+    type: email
+    settings:
+      addresses: ikanv13@gmail.com
