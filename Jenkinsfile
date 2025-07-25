@@ -56,7 +56,7 @@ pipeline {
         HELM_RELEASE_NAME = 'flask-chart'
         SONARQUBE_SERVER = 'sonarqube'
         SONAR_PROJECT_KEY = 'flask-cicd-demo'
-        BRANCH_NAME = 'task_6'
+        BRANCH_NAME = 'task_7'
         SLACK_CHANNEL = '#ai'
     }
 
@@ -194,7 +194,7 @@ pipeline {
             when {
                 anyOf {
                     branch 'main'
-                    branch 'task_6'
+                    branch 'task_7'
                 }
             }
             steps {
