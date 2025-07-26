@@ -283,7 +283,32 @@ pipeline {
                 }
             }
         }
+        stage('Debug Environment') {
+            steps {
+                container('kubectl') {
+                    sh '''
+                        echo "=== Current Directory ==="
+                        pwd
 
+                        echo "=== Directory Contents ==="
+                        ls -la
+
+                        echo "=== Monitoring Directory ==="
+                        ls -la monitoring/ || echo "monitoring directory not found"
+
+                        echo "=== kubectl version ==="
+                        kubectl version --client
+
+                        echo "=== Cluster info ==="
+                        kubectl cluster-info
+
+                        echo "=== Check permissions ==="
+                        kubectl auth can-i create deployments -n monitoring
+                        kubectl auth can-i create services -n monitoring
+                    '''
+                }
+            }
+        }
         stage('Deploy Mailhog') {
             steps {
                 container('kubectl') {
