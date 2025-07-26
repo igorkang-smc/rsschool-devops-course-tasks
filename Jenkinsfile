@@ -27,9 +27,8 @@ pipeline {
                     args: ["99d"]
                     tty: true
                   - name: kubectl
-                    image: bitnami/kubectl:latest
-                    command: ["sleep"]
-                    args: ["99d"]
+                    image: lachlanevenson/k8s-kubectl:v1.22.16
+                    command: ["cat"]
                     tty: true
                   - name: sonar
                     image: sonarsource/sonar-scanner-cli:latest
